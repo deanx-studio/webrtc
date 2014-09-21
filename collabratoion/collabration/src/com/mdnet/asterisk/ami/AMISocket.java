@@ -79,7 +79,7 @@ public class AMISocket {
 		connect();
 	}
 
-	public synchronized int sendData(ActionMsg msg) {
+	public synchronized ResponseMsg sendData(ActionMsg msg) {
 		String text = msg.toString();
 		try {
 
@@ -87,11 +87,14 @@ public class AMISocket {
 
 			this.writer.write(text.getBytes());
 			System.out.println("已经发送消息:\r\n" + text);
-			return text.length();
+			//return text.length();
+			//接收请求
+			ResponseMsg  r = resp.getResp(msg.getActionID());
+			return r;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return 0;
+			return null;
 		}
 	}
 

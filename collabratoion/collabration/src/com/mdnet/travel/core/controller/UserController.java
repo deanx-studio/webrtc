@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mdnet.asterisk.action.OriginateAction;
+import com.mdnet.asterisk.ami.AMIBase;
+import com.mdnet.asterisk.ami.ResponseMsg;
 import com.mdnet.travel.core.service.IAdminService;
 import com.mdnet.travel.core.service.ICallService;
 
@@ -112,15 +115,16 @@ public class UserController extends BaseController {
 			this.mav.addObject(
 					"callList",
 					this.callService.findHistory("where localPeer='SIP/" + id
-							+ "'",0, 4));
+							+ "'", 0, 4));
 
 			// sip相关数据
 			TerminateInfo ti = this.callService.findTerm(id);
 			if (ti != null) {
 				this.mav.addObject("domain", "sip.deanx.cn");
 				this.mav.addObject("wsServers", "ws://deanx.cn:10060");
-				//String ws_server= "{'scheme':'WSS','sip_uri':'<sip:deanx.cn;transport=udp;lr>','status':0,'weight':0,'ws_uri':'ws://deanx.cn:10060'}";
-				//this.mav.addObject("wsServers", ws_server);
+				// String ws_server=
+				// "{'scheme':'WSS','sip_uri':'<sip:deanx.cn;transport=udp;lr>','status':0,'weight':0,'ws_uri':'ws://deanx.cn:10060'}";
+				// this.mav.addObject("wsServers", ws_server);
 				this.mav.addObject("uri", "sip:" + id + "@sip.deanx.cn:5060");
 				this.mav.addObject("authorizationUser", id);
 				this.mav.addObject("password", ti.getDevicePassword());
@@ -134,12 +138,22 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping("/makeCall")
-	public ModelAndView makeCall(
-			@RequestParam(value = "id", required = true) String id) {
-		this.createMav();
-		this.mav.setViewName("sipjs/makeCall");
-		this.mav.addObject("id", id);
-		return this.mav;
+	@ResponseBody
+	public String makeCall(
+			@RequestParam(value = "callee", required = true) String callee) {
+		OriginateAction msg = new OriginateAction();
+		msg.setChannel("SIP/" + callee);
+		msg.setExten(callee);
+		msg.setAsync("true");
+		msg.setContext("LocalExtensions");
+		msg.setPriority(1);
+		msg.setTimeout(30000);
+		msg.setCallerID(" \"asterisk \" <" + callee + ">");
+
+		ResponseMsg respMsg = AMIBase.instance().sendAction(msg);
+		return String.valueOf(respMsg.getResponse() + ":"
+				+ respMsg.getMessage());
+
 	}
 
 	@RequestMapping("/receiveCall")

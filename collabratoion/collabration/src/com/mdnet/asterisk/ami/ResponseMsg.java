@@ -13,10 +13,10 @@ public class ResponseMsg {
 	public final static String ResponseTag = "Response:";
 	public final static String ActionIDTag = "ActionID:";
 	public final static String MessageTag = "Message:";
-
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public ResponseMsg() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		this.respTime = sdf.format(new Date());
+		
+		this.respTime = ResponseMsg.sdf.format(new Date());
 	}
 
 	protected String respTime;

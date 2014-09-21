@@ -28,7 +28,8 @@ public class AMIBase {
 		socket.reconnect();
 	}
 
-	public int sendAction(ActionMsg msg) {
-		return 1;
+	public ResponseMsg sendAction(ActionMsg msg) {
+		ResponseMsg respMsg = this.socket.sendData(msg);
+		return respMsg;
 	}
 }
