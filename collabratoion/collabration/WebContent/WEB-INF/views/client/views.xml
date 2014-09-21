@@ -1,0 +1,40 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="user/home" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/home.jsp" />
+	</definition>
+	<definition name="conduct/term" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/conduct/term.jsp" />
+	</definition>
+	<definition name="user/term" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/user/term.jsp" />
+	</definition>
+	<definition name="user/term2calls" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/user/term2calls.jsp" />
+	</definition>
+
+	<definition name="sipjs/makeCall" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/user/makeCall.jsp" />
+	</definition>
+
+	<definition name="sipjs/receiveCall" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/user/receiveCall.jsp" />
+	</definition>
+
+	<definition name="nohead/user/term" extends="nohead_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/user/term.jsp" />
+	</definition>
+	<definition name="nohead/conduct/term" extends="nohead_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/conduct/term.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,17 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="admin/home" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/home.jsp" />
+	</definition>
+
+	<definition name="admin/userList" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/user/list.jsp" />
+	</definition>
+	
+	<definition name="admin/term/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/term/list.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.zhinet.travel.pojo.basepojo">
+
+	<class name="net.zhinet.travel.pojo.basepojo.CallHistory" table="call_history"
+		optimistic-lock="version">
+		<id name="id">
+			<generator class="native" />
+		</id>
+
+		<property name="localPeer" type="string">
+			<column index="INX_CALL_PEER" name="local_peer" length="32"
+				not-null="false">
+				<comment>本端帐号例如：SIP/1000</comment>
+			</column>
+		</property>
+		<property name="remotePeer" type="string">
+			<column index="INX_CALL_REMOTE" name="remote_peer" length="32"
+				not-null="true">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="channel" type="string">
+			<column index="INX_CALL_CHANNEL" name="call_channel" length="64"
+				not-null="true">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="status" type="int">
+			<column name="call_status">
+				<comment>呼叫结果,0:接通、1:未接通</comment>
+			</column>
+		</property>
+		<property name="makeTime" type="string">
+			<column name="make_time" length="32" not-null="true">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<property name="endTime" type="string">
+			<column name="end_time" length="32" not-null="true">
+				<comment>结束时间</comment>
+			</column>
+		</property>
+
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- Automatically registers a login form, BASIC authentication, anonymous 
+		authentication, logout services, remember-me and servlet-api-integration. -->
+	<http auto-config="true" use-expressions="true">
+		<form-login login-page="/login" login-processing-url="/static/j_spring_security_check"
+			authentication-failure-url="/login" default-target-url="/loginRoot" />
+		<logout logout-url="/static/j_spring_security_logout" />
+		<intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN,ROLE_CONDUCTER')" />
+		<intercept-url pattern="/term/**" access="hasAnyRole('ROLE_ADMIN,ROLE_CONDUCTER')" />
+		<intercept-url pattern="/client/**" access="hasRole('ROLE_USER')" />
+		<remember-me key="travelerKey" token-validity-seconds="2419200" />
+
+	</http>
+
+	<!--<start id="authentication_manager"/> -->
+	<authentication-manager alias="authenticationManager">
+
+		<authentication-provider user-service-ref="userService">
+			<password-encoder hash="md5" />
+		</authentication-provider>
+	</authentication-manager>
+
+
+
+	<beans:import resource="traveler-security-jdbc.xml" />
+</beans:beans>

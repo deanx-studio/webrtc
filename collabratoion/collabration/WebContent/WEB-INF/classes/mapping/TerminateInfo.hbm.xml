@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.zhinet.travel.pojo.basepojo">
+
+	<class name="net.zhinet.travel.pojo.basepojo.TerminateInfo"
+		table="terminate_info" optimistic-lock="version">
+		<id name="id">
+			<generator class="native" />
+		</id>
+
+		<property name="Channel" type="string">
+			<column index="INX_CHANNEL" name="channel" length="32" not-null="false">
+				<comment>呼叫对应的channel，例如:SIP/1000-00000014</comment>
+			</column>
+		</property>
+		<property name="ChannelState" type="int">
+			<column name="channel_state" >
+				<comment>呼叫状态值</comment>
+			</column>
+		</property>
+		<property name="ChannelStateDesc" type="string">
+			<column name="channel_state_desc" length="16" not-null="false">
+				<comment>呼叫状态描述</comment>
+			</column>
+		</property>
+		<property name="CallerIDNum" type="string">
+			<column name="Caller_id_num" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="CallerIDName" type="string">
+			<column name="caller_id_name" length="32" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="AccountCode" type="string">
+			<column name="account_code" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="Exten" type="string">
+			<column name="exten" length="16" not-null="false">
+				<comment>客户端拨打的呼叫的</comment>
+			</column>
+		</property>
+		<property name="Context" type="string">
+			<column name="context" length="16" not-null="false">
+				<comment>对应的extention的名字</comment>
+			</column>
+		</property>
+		<property name="Uniqueid" type="string">
+			<column index="INX_UNIQUENE_ID" name="unique_id" length="32" not-null="false">
+				<comment>呼叫唯一标识</comment>
+			</column>
+		</property>
+		
+		<property name="Priority" type="int">
+			<column name="priority">
+				<comment>extension策略的序号</comment>
+			</column>
+		</property>
+		<property name="Application" type="string">
+			<column name="application" length="64" not-null="false">
+				<comment>策略对应的具体函数</comment>
+			</column>
+		</property>
+		<property name="AppData" type="string">
+			<column name="app_data" length="16" not-null="false">
+				<comment>extension函数对应的参数</comment>
+			</column>
+		</property>
+		<property name="ConnectedLineNum" type="int">
+			<column name="connected_line_num">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="ConnectedLineName" type="string">
+			<column name="connected_line_name" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="ChannelType" type="string">
+			<column name="channel_type" length="8" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="Peer" type="string">
+			<column index="INX_PEER" name="peer" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="devicePassword" type="string">
+			<column name="device_password" length="32" not-null="false">
+				<comment>设备密码</comment>
+			</column>
+		</property>
+		<property name="PeerStatus" type="string">
+			<column name="peer_status" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="Address" type="string">
+			<column name="address" length="32" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="Cause" type="string">
+			<column name="cause" length="16" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="CauseText" type="string">
+			<column name="cause_text" length="32" not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="lastRegisterTime" type="timestamp">
+			<column name="last_register_time" sql-type="datetime" not-null="false">
+				<comment>上次注册时间</comment>
+			</column>
+		</property>
+		<property name="UnRegisterTime" type="timestamp">
+			<column name="unregister_time" sql-type="datetime" not-null="false">
+				<comment>注册失效时间</comment>
+			</column>
+		</property>
+		<property name="lastCallStartTime" type="timestamp">
+			<column name="last_call_start_time" sql-type="datetime" not-null="false">
+				<comment>最近一次发起呼叫发起时间</comment>
+			</column>
+		</property>
+		<property name="lastCallEndTime" type="timestamp">
+			<column name="last_call_end_time" sql-type="datetime" not-null="false">
+				<comment>最近一次发起呼叫截止时间</comment>
+			</column>
+		</property>
+
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.zhinet.travel.pojo.basepojo">
+
+	<class name="net.zhinet.travel.pojo.basepojo.UserInfo" table="user_info"
+		optimistic-lock="version">
+		<id name="id">
+			<generator class="native" />
+		</id>
+
+		<property name="username" type="string">
+			<column index="INX_USER_NAME" name="username" length="32"
+				not-null="true">
+				<comment></comment>
+			</column>
+		</property>
+		<property name="password" type="string">
+			<column name="password" length="32" not-null="true">
+				<comment>MD5密码</comment>
+			</column>
+		</property>
+		<property name="mobile" type="string">
+			<column name="mobile" length="32" not-null="false">
+				<comment>手机号码</comment>
+			</column>
+		</property>
+		<property name="authority" type="string">
+			<column name="authority" length="32" not-null="true">
+				<comment>对应角色role</comment>
+			</column>
+		</property>
+		<property name="makeTime" type="string">
+			<column name="make_time" length="32" not-null="true">
+				<comment>创建时间</comment>
+			</column>
+		</property>
+		<property name="terminateNumber" type="string">
+			<column name="terminate_number" length="32" not-null="false">
+				<comment>在系统中分配的号码（浏览器使用）</comment>
+			</column>
+		</property>
+	</class>
+
+</hibernate-mapping>

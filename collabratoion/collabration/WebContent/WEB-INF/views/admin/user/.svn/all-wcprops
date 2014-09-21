@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/7923/travel/travel-weixin/WebContent/WEB-INF/views/super/user
+END
+add.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/7948/travel/travel-weixin/WebContent/WEB-INF/views/super/user/add.jsp
+END
+list.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/7923/travel/travel-weixin/WebContent/WEB-INF/views/super/user/list.jsp
+END
+update.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/7948/travel/travel-weixin/WebContent/WEB-INF/views/super/user/update.jsp
+END
