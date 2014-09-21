@@ -1,4 +1,6 @@
-package com.mdnet.asterisk.ami;
+package com.mdnet.asterisk.action.copy;
+
+import com.mdnet.asterisk.ami.ActionMsg;
 
 public class LoginActionMsg extends ActionMsg {
 	public LoginActionMsg() {
