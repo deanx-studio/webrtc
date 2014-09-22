@@ -1,0 +1,62 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  
+<tiles-definitions>
+	<definition name="mobile/custom/home" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/home.jsp" />
+	</definition>
+	<definition name="mobile/custom/lines" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/lines.jsp" />
+	</definition>
+	<definition name="mobile/custom/book" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/book.jsp" />
+	</definition>
+	<definition name="mobile/custom/order" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/order.jsp" />
+	</definition>
+	<definition name="mobile/custom/detail" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail.jsp" />
+	</definition>
+	
+	<definition name="mobile/custom/mine" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/mine.jsp" />
+	</definition>
+	<definition name="mobile/custom/private0" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private0.jsp" />
+	</definition>
+	<definition name="mobile/custom/private1" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private1.jsp" />
+	</definition>
+	<definition name="mobile/custom/private2" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private2.jsp" />
+	</definition>
+	<definition name="mobile/custom/private3" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private3.jsp" />
+	</definition>
+	<definition name="mobile/custom/private4" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private4.jsp" />
+	</definition>
+	<definition name="mobile/custom/private5" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private5.jsp" />
+	</definition>
+	<definition name="mobile/custom/private6" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private6.jsp" />
+	</definition>
+	<definition name="mobile/custom/about" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/about.jsp" />
+	</definition>
+	<definition name="mobile/custom/recommend" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/recommend.jsp" />
+	</definition>	 
+	<definition name="mobile/custom/groupList" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/groupList.jsp" />
+	</definition>
+	<definition name="mobile/custom/articles" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/articles.jsp" />
+	</definition>
+	<definition name="mobile/custom/mine_sel" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/mine_sel.jsp" />
+	</definition>
+	
+</tiles-definitions>

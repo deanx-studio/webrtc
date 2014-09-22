@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="WeixinAccount" table="weixin_account_def">
+		<!-- 映射标识属性 -->
+		<id name="accountId" column="account_id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<!-- 映射普通属性 -->
+		
+		<property name="wxFromUserName" type="string">
+			<column name="wx_from_user_name" not-null="true" length="64">
+				<comment>腾讯分配给微信的原始ID，是微信帐号的唯一标识，在帐号设置中可以找到</comment>
+			</column>
+		</property>
+		<property name="wxName" type="string">
+			<column name="wx_name" not-null="false" length="64">
+				<comment>微信帐号名称</comment>
+			</column>
+		</property>
+		<property name="wxAccount" type="string">
+			<column name="wx_account" not-null="false" length="64">
+				<comment>微信号</comment>
+			</column>
+		</property>
+		<property name="wxType" type="int">
+			<column name="wx_type" not-null="false">
+				<comment>微信类型，0：订阅号；1：服务号</comment>
+			</column>
+		</property>
+		<property name="makeTime" type="string">
+			<column name="make_time" not-null="false" length="32">
+				<comment>记录创建时间</comment>
+			</column>
+		</property>
+		<property name="appId" type="string">
+			<column name="app_id" not-null="false" length="32">
+				<comment>微信访问appId</comment>
+			</column>
+		</property>
+		<property name="appSecret" type="string">
+			<column name="app_secret" not-null="false" length="32">
+				<comment>微信访问appSecret</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

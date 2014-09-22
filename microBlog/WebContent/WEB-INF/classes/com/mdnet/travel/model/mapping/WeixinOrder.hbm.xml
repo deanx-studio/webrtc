@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="WeixinOrder" table="weixin_order">
+		<!-- 映射标识属性 -->
+		<id name="id" column="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<property name="localOrderId" type="string">
+			<column name="local_order_id" not-null="true" length="64">
+				<comment>本平台的订单号</comment>
+			</column>
+		</property>
+		<property name="weixinOrderId" type="string">
+			<column name="weixin_order_id" not-null="true" length="64">
+				<comment>微信订单号</comment>
+			</column>
+		</property>
+		<property name="orderStatus" type="int">
+			<column name="order_status" not-null="true">
+				<comment>订单状态</comment>
+			</column>
+		</property>
+		<property name="orderTotalPrice" type="int">
+			<column name="order_total_price" not-null="true">
+				<comment>订单总价，单位：分</comment>
+			</column>
+		</property>
+		<property name="orderCreateTime" type="int">
+			<column name="order_create_time" not-null="true">
+				<comment>订单创建时间</comment>
+			</column>
+		</property>
+		<property name="orderExpressPrice" type="int">
+			<column name="order_express_price" not-null="true">
+				<comment>快递价格，单位：分</comment>
+			</column>
+		</property>
+		<property name="buyerOpenid" type="string">
+			<column name="buyer_openid" not-null="true" length="64">
+				<comment>买家ID</comment>
+			</column>
+		</property>
+		<property name="buyerNick" type="string">
+			<column name="buyer_nick" not-null="true">
+				<comment>买家昵称</comment>
+			</column>
+		</property>
+		<property name="receiverName" type="string">
+			<column name="receiver_name" not-null="true">
+				<comment>接收者名称</comment>
+			</column>
+		</property>
+		<property name="receiverProvince" type="string">
+			<column name="receiver_province" not-null="true" length="12">
+				<comment>买家所在省份</comment>
+			</column>
+		</property>
+		<property name="receiverCity" type="string">
+			<column name="receiver_city" not-null="true" length="16">
+				<comment>买家所在城市</comment>
+			</column>
+		</property>
+		<property name="receiverAddress" type="string">
+			<column name="receiver_address" not-null="true">
+				<comment>买家地址</comment>
+			</column>
+		</property>
+		<property name="receiverMobile" type="string">
+			<column name="receiver_mobile" not-null="true" length="32">
+				<comment>买家手机</comment>
+			</column>
+		</property>
+		<property name="receiverPhone" type="string">
+			<column name="receiver_phone" not-null="true" length="32">
+				<comment>买家电话</comment>
+			</column>
+		</property>
+		<property name="productId" type="string">
+			<column name="product_id" not-null="true">
+				<comment>微信产品编码</comment>
+			</column>
+		</property>
+		<property name="productName" type="string">
+			<column name="product_name" not-null="true">
+				<comment>微信平台产品名称</comment>
+			</column>
+		</property>
+		<property name="productPrice" type="int">
+			<column name="product_price" not-null="true">
+				<comment>产品价格，单位：分</comment>
+			</column>
+		</property>
+		<property name="productSku" type="string">
+			<column name="product_sku" not-null="true" length="64">
+				<comment>产品分类编码</comment>
+			</column>
+		</property>
+		<property name="productCount" type="int">
+			<column name="product_count" not-null="true">
+				<comment>产品数量</comment>
+			</column>
+		</property>
+		<property name="productImg" type="string">
+			<column name="product_img" not-null="true" >
+				<comment>产品图片</comment>
+			</column>
+		</property>
+		<property name="deliveryId" type="string">
+			<column name="delivery_id" not-null="true" length="64">
+				<comment>处理ID</comment>
+			</column>
+		</property>
+		<property name="deliveryCompany" type="string">
+			<column name="delivery_company" not-null="true" length="64">
+				<comment>处理公司编码</comment>
+			</column>
+		</property>
+		<property name="transId" type="string">
+			<column name="trans_id" not-null="true" length="64">
+				<comment>事务ID</comment>
+			</column>
+		</property>
+
+	</class>
+</hibernate-mapping>

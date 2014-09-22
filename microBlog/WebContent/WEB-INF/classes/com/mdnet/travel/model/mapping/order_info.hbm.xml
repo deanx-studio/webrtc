@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 
+ Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.order.model">
+ <class name="OrderInfo" table="o_order_info">
+  <!-- 映射标识属性 -->
+  <id column="id" name="id">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="identity"/>
+  </id>
+  <!-- 产品信息 -->
+  <property generated="never" lazy="false" name="productId" type="int">
+   <column name="product_id">
+    <comment>产品ID</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productName" type="string">
+   <column length="64" name="product_name" not-null="true">
+    <comment>产品名称</comment>
+   </column>
+  </property>
+  <!-- 消费者/用户信息 -->
+  <property generated="never" lazy="false" name="productPrice" type="int">
+   <column name="product_price">
+    <comment>产品单价 单位：分，可以有两位小数</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="amount" type="int">
+   <column default="0" name="amount">
+    <comment>购买数量 整数</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="childrenBedsCount" type="int">
+   <column default="0" name="children_beds_count">
+    <comment>包含儿童床位数数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="childrenCount" type="int">
+   <column default="0" name="children_count">
+    <comment>包含儿童数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="adultCount" type="int">
+   <column default="0" name="adult_count">
+    <comment>包含成年人数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="oldCount" type="int">
+   <column default="0" name="oldman_count">
+    <comment>包含老年人数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="userName" type="string">
+   <column length="20" name="user_name" not-null="true">
+    <comment>消费者姓名</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="userMobile" type="string">
+   <column length="20" name="user_mobile" not-null="true">
+    <comment>消费者手机号码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="userCardNo" type="string">
+   <column length="64" name="user_card_no">
+    <comment>消费者证件号码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="orderDate" type="string">
+   <column length="20" name="order_date" not-null="true">
+    <comment>下单时间</comment>
+   </column>
+  </property>
+  <!-- 支付信息 -->
+  <property generated="never" lazy="false" name="payDate" type="string">
+   <column length="20" name="pay_date" not-null="true">
+    <comment>付款时间</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="payMoney" type="int">
+   <column name="pay_money">
+    <comment>产品售价，支付总金额 单位：分，可以有两位小数</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="customerPayMoney" type="int">
+   <column name="customer_pay_money">
+    <comment>实际支付总金额 单位：分，可以有两位小数</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="payChannel" type="int">
+   <column name="pay_channel">
+    <comment>付款渠道，默认为0，0：支付宝；1：财付通；2：微信</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="payOrderId" type="string">
+   <column length="64" name="pay_order_id" not-null="true">
+    <comment>支付ID</comment>
+   </column>
+  </property>
+  <!-- 订单管理信息 -->
+  <property generated="never" lazy="false" name="orderState" type="int">
+   <column name="order_state">
+    <comment>订单状态: 0-无记录；1-下单；2-下单失败；3：出单/支付成功；4：客户取消；5：退款；6：已经消费</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="orderId" type="string">
+   <column length="64" name="order_id" not-null="true">
+    <comment>订单号</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="arriveDate" type="string">
+   <column length="20" name="arrive_date" not-null="true">
+    <comment>到达时间</comment>
+   </column>
+  </property>
+  <!-- 渠道/下单方信息 -->
+  <property generated="never" lazy="false" name="bookerName" type="string">
+   <column length="64" name="booker_name" not-null="true">
+    <comment>下单人名称信息</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="bookerPhone" type="string">
+   <column length="32" name="booker_phone" not-null="true">
+    <comment>下单人手机号</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="channelSourceId" type="string">
+   <column length="64" name="channel_source_id" not-null="true">
+    <comment>购买渠道/平台标识</comment>
+   </column>
+  </property>
+  <!-- 消费结果 -->
+  <property generated="never" lazy="false" name="consumeCount" type="int">
+   <column name="consume_count">
+    <comment>消费数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="lastConsumeTime" type="string">
+   <column length="20" name="last_consume_time" not-null="true">
+    <comment>最后消费时间</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

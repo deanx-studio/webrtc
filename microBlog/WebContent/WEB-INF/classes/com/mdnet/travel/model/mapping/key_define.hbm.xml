@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="KeyDefine" table="key_define">
+		<!-- 映射标识属性 -->
+		<id name="id" column="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<!-- 映射普通属性 -->
+		<property name="keyValue" type="int">
+			<column name="key_value" not-null="true">
+				<comment>键值标识</comment>
+			</column>
+		</property>
+		<property name="keyName" type="string">
+			<column name="key_name" not-null="true">
+				<comment>键名称</comment>
+			</column>
+		</property>
+		<property name="keyDescript" type="string">
+			<column name="key_descript" not-null="true">
+				<comment>键的用途描述</comment>
+			</column>
+		</property>
+		<property name="toUserName" type="string">
+			<column name="to_user_name" not-null="true" length="64">
+				<comment>微信原始ID，微信消息中的toUserName</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

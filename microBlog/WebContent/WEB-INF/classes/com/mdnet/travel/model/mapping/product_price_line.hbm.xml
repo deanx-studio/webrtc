@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.order.model">
+	<class name="ProductPriceLine" table="o_product_price_line">
+		<!-- 映射标识属性 -->
+		<id column="id" name="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<property generated="never" lazy="false" name="productId"
+			type="int">
+			<column name="product_id">
+				<comment>产品编码</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="lowPrice"
+			type="int">
+			<column name="low_price">
+				<comment>最低价格</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="offPrice"
+			type="int">
+			<column name="off_price">
+				<comment>优惠部分的价格（不是优惠后的价格）</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="bookPrice"
+			type="int">
+			<column name="book_price">
+				<comment>预订价格</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="salePrice"
+			type="int">
+			<column name="sale_price">
+				<comment>零售价格</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="startValidate"
+			type="string">
+			<column length="20" name="start_validate" not-null="true">
+				<comment>有效期起始日期</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="endValidate"
+			type="string">
+			<column length="20" name="end_validate" not-null="true">
+				<comment>有效期截止日期,有效期</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="priceMemo"
+			type="string">
+			<column name="price_memo">
+				<comment>价格说明</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="modifyTime"
+			type="string">
+			<column length="20" name="modify_time" not-null="true">
+				<comment>最后修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

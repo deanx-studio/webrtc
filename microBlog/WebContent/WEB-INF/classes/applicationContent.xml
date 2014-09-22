@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+	<context:component-scan base-package="com.mdnet.travel.core" />
+	<!-- 配置数据库连接池（dbcp） -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:url="jdbc:mysql://112.126.64.234:3306/travel_weixin"
+		p:driverClassName="com.mysql.jdbc.Driver" p:username="weixin"
+		p:password="MingdaNET" p:minEvictableIdleTimeMillis="1800000"
+		p:numTestsPerEvictionRun="3" p:testOnBorrow="true" p:testOnReturn="true"
+		p:testWhileIdle="true" p:validationQuery="SELECT 1" />
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+		p:dataSource-ref="dataSource">
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:/com/mdnet/travel/model/mapping/Article.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Customer.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/key_define.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Media.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/menu_define.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Traveler.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/ReqMessage.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Special.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/WeixinAccount.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/ValidateCode.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/WeixinOrder.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/WeixinProduct.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Personal.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/order_info.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/product_info.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/product_price_line.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/Group_date.hbm.xml
+				</value>
+				<value>classpath:/com/mdnet/travel/model/mapping/meta_keywords.hbm.xml
+				</value>
+			</list>
+
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"
+		p:sessionFactory-ref="sessionFactory" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+
+	<!-- SOAP接口类 <bean id="ProxyService" class="com.mdnet.travel.core.service.ProxyService" 
+		scope="singleton"> <constructor-arg ref="constant" /> </bean> 微信业务参数 -->
+	<bean id="constant" class="com.mdnet.travel.core.common.Constant"
+		scope="singleton">
+
+		<property name="PAY_MOBILE">
+			<value>http://www.xdujia.com/zfbwap/alipayapi.jsp</value>
+		</property>
+		<property name="PAY_WEB">
+			<value>http://www.xdujia.com/zfbweb/alipayapi.jsp</value>
+		</property>
+		<property name="WX_MSGSOURCE">
+			<value>weixin123</value>
+		</property>
+		<property name="WX_KEY">
+			<value>weixin123</value>
+		</property>
+
+		<property name="MobileHomePage">
+			<value>/custom/book</value>
+		</property>
+		<property name="PCHomePage">
+			<value>/custom/book</value>
+		</property>
+
+		<property name="payConfirmUrl">
+			<value>http://www.xdujia.com/</value>
+		</property>
+		<property name="END_POINT">
+			<value>http://zhinet.net:8080/travel-interface/services/</value>
+		</property>
+		<property name="weixin_web">
+			<value>http://www.xdujia.com/</value>
+		</property>
+
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- CronTigger类型 -->
+	<!-- 要调用的工作类，即任务处理类 -->
+	<bean id="orderQuery" class="com.mdnet.travel.core.model.CronTiggerJob">
+		<property name="pause">
+			<value>false</value>
+		</property>
+		<property name="sitemapPath">
+			<value>/home/default/ROOT/sitemap.xml</value>
+		</property>
+		<property name="sitemapUrl">
+			<value>http://127.0.0.1/custom/sitemap</value>
+		</property>
+	</bean>
+
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="queryOrderTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="orderQuery" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>work</value>
+		</property>
+	</bean>
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序，随项目一起启动 -->
+	<bean id="startOrderQuery" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="doOrderQueryTime" />
+			</list>
+		</property>
+	</bean>
+	<!-- CronTigger类型 -->
+	<bean id="doOrderQueryTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="queryOrderTask" />
+		</property>
+		<property name="cronExpression">
+			<value>0 49 19,22 ? * *</value><!-- 每天9 13 17 21 时各执行一次 触发 0 * 9,13,17,21 
+				? * * -->
+		</property>
+	</bean>
+</beans>

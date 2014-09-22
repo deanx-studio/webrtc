@@ -1,0 +1,13 @@
+/**
+ * CommonTools.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
+ */
+
+package net.zhinet.travel.inf.impl;
+
+public interface CommonTools extends java.rmi.Remote {
+    public net.zhinet.travel.pojo.reqandrespojo.SMSResp sendSMS(net.zhinet.travel.pojo.reqandrespojo.SMSReq smsReq) throws java.rmi.RemoteException;
+    public net.zhinet.travel.pojo.reqandrespojo.EMailResp sendEmail(net.zhinet.travel.pojo.reqandrespojo.EMailReq emailReq) throws java.rmi.RemoteException;
+}

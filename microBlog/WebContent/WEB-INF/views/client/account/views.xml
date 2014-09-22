@@ -1,0 +1,18 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="my/basic" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/account/basic_info.jsp" />
+	</definition>
+	<definition name="my/reset_info" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/account/reset_info.jsp" />
+	</definition>
+ 	<definition name="my/reset_pass" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/account/reset_pass.jsp" />
+	</definition>
+	<definition name="forget" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/account/forget.jsp" />
+	</definition>
+</tiles-definitions>

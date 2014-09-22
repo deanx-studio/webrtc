@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/views/custom/dest.jsp=UTF-8
+encoding//src/com/mdnet/travel/core/controller/AdminController.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/ComplaintController.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/EventController.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/HomeController.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/MenuDefineHandler.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/OrderController.java=UTF-8
+encoding//src/com/mdnet/travel/core/controller/ScenicController.java=UTF-8
+encoding/<project>=UTF-8

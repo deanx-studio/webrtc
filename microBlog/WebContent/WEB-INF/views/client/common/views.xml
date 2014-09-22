@@ -1,0 +1,19 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="common/success" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/common/succ.jsp" />
+	</definition>
+	<definition name="common/busy" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/common/busy.jsp" />
+	</definition>
+	<definition name="common/fail" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/common/fail.jsp" />
+	</definition>
+	<definition name="common/login" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/common/login.jsp" />
+	</definition>
+
+</tiles-definitions>

@@ -1,0 +1,15 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="do/complaint" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/complaint/complaint.jsp" />
+	</definition>
+	<definition name="list/complaint" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/complaint/list_c.jsp" />
+	</definition>
+</tiles-definitions>
+ 

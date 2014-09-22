@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+ <class name="WeixinProduct" table="weixin_product">
+  <!-- 映射标识属性 -->
+  <id column="id" name="id">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="native"/>
+  </id>
+  <property generated="never" index="INX_WX_PRODUCT_ID" lazy="false"
+   name="weixinProductId" type="string">
+   <column length="64" name="weixin_product_id" not-null="true">
+    <comment>微信平台产品编码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="localProductId" type="int">
+   <column name="local_product_id" not-null="true">
+    <comment>本地产品编码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="sku" type="string">
+   <column name="product_product_sku" not-null="true" >
+    <comment>产品分类，以,号分开</comment>
+   </column>
+  </property>
+   <property generated="never" lazy="false" name="cateId" type="string">
+   <column name="category_id" not-null="false" length="64">
+    <comment>产品分类ID</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productPrice" type="int">
+   <column name="product_price" not-null="true">
+    <comment>产品微信零售价</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productState" type="int">
+   <column name="product_state" not-null="true">
+    <comment>产品状态，0：下架；1：上架</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="makeTime" type="string">
+   <column name="make_time" not-null="true">
+    <comment>创建或者最后更新时间</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

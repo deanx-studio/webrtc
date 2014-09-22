@@ -1,0 +1,15 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="subscribe/enter" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/subscribe/enter.jsp" />
+	</definition>
+	<definition name="subscribe/bind" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/subscribe/bind.jsp" />
+	</definition>
+	<definition name="ticket/list" extends="client_template">
+		<put-attribute name="content" value="/WEB-INF/views/client/subscribe/ticketlist.jsp" />
+	</definition>
+</tiles-definitions>

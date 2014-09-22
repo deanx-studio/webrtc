@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+ <class name="PersonalCustom" table="personal_custom">
+  <!-- 映射标识属性 -->
+  <id column="id" name="id">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="native"/>
+  </id>
+  <property generated="never" lazy="false" name="sessionID" type="string">
+   <column length="64" name="session_id" not-null="true" unique="true" unique-key="INX_CUSTOM_SESSION">
+    <comment>sessionID，没有注册前使用</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="goal" type="string">
+   <column name="goal" not-null="true" >
+    <comment>此行的主要目的</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="mobile" type="string">
+   <column index="INX_CUSTOM_MOBILE" length="20" name="mobile" not-null="false">
+    <comment>用户联系手机号码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="userName" type="string">
+   <column length="32" name="user_name" not-null="false">
+    <comment>用户真实姓名</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="email" type="string">
+   <column length="64" name="email" not-null="false">
+    <comment>用户邮箱</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="national" type="string">
+   <column name="national" not-null="true" sql-type="text">
+    <comment>目的国以，分割</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="cities" type="string">
+   <column name="cities" not-null="true">
+    <comment>目的城市和景点以，分割多个</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="startDate" type="string">
+   <column length="32" name="start_date" not-null="false">
+    <comment>出行日期</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="tripDays" type="int">
+   <column default="0" name="trip_days">
+    <comment>出行天数</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="adultPerson" type="int">
+   <column default="0" name="adult_person">
+    <comment>成年人数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="childrenPerson" type="int">
+   <column default="0" name="children_person">
+    <comment>儿童数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="oldPerson" type="int">
+   <column default="0" name="old_person">
+    <comment>老年人数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="standardNumber" type="int">
+   <column default="0" name="standard_number">
+    <comment>标间数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="adaptmentPerson" type="int">
+   <column default="0" name="adaptment_person">
+    <comment>套间数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="kingNumber" type="int">
+   <column default="0" name="king_number">
+    <comment>大床房数量</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="hotelGeogrophy" type="string">
+   <column length="8" name="hotel_geo">
+    <comment>酒店位置</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="hotelLevel" type="int">
+   <column default="0" name="hotel_level">
+    <comment>酒店星级</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="airCompany" type="string">
+   <column name="air_company">
+    <comment>航空公司</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="airClass" type="int">
+   <column default="0" name="air_class">
+    <comment>座舱级别0:经济舱；1：商务舱；2：头等舱</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="autoModel" type="string">
+   <column default="0" name="auto_model">
+    <comment>车型选择</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="tripMode" type="int">
+   <column default="0" name="trip_mode">
+    <comment>出行方式。0：自驾；1：非自驾</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="mealType" type="int">
+   <column default="0" name="meal_type">
+    <comment>用餐口味，0：中餐；1：西餐</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="mealProvider" type="int">
+   <column default="0" name="meal_provider">
+    <comment>用餐提供方式，0：旅行社推荐或提供；1：自理</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="elseService" type="string">
+   <column default="0" name="else_service">
+    <comment>其他服务选项</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="memo" type="string">
+   <column default="0" name="memo">
+    <comment>备注信息</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="state" type="int">
+   <column name="state">
+    <comment>订制状态</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="advice" type="string">
+   <column name="advice" not-null="false">
+    <comment>给客户的意见</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="makeTime" type="string">
+   <column length="32" name="make_time" not-null="true">
+    <comment>创建时间</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="Customer" table="cus_table">
+		<!-- 映射标识属性 -->
+		<id name="id" column="cus_id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<!-- 映射普通属性 -->
+		<property name="fromUserName" column="from_username" length="32"/>
+		<property name="subscribeTime" column="subscribe_time" length="15"/>
+		<property name="unSubscribeTime" column="unsubscribe_time" length="15"/>
+		<property name="lastVisit" column="last_visit" length="15"/>
+		<property name="location_x" column="location_x" length="20"/>
+		<property name="location_y" column="location_y" length="20"/>
+		<property name="label"/>
+	</class>
+</hibernate-mapping>

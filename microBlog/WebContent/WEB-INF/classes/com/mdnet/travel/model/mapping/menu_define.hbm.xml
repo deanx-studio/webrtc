@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="MenuDefine" table="menu_define">
+		<!-- 映射标识属性 -->
+		<id name="id" column="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<property name="parentId" type="int">
+			<column name="parent_id" not-null="true">
+				<comment>父菜单ID，0为顶级菜单</comment>
+			</column>
+		</property>
+		<property name="menuName" type="string">
+			<column name="menu_name" not-null="true">
+				<comment>菜单名称</comment>
+			</column>
+		</property>
+		<property name="menuType" type="string">
+			<column name="menu_type" not-null="true">
+				<comment>//可选值："click" "view"</comment>
+			</column>
+		</property>
+	
+		<property name="menuKey" type="int">
+			<column name="menu_key" not-null="true">
+				<comment>菜单key，类型为click时有效</comment>
+			</column>
+		</property>
+		
+		<property name="menuUrl" type="string">
+			<column name="menu_url" not-null="true">
+				<comment>菜单对应的URL地址，类型为view时有效</comment>
+			</column>
+		</property>
+		
+		<property name="toUserName" type="string">
+			<column name="to_user_name" not-null="true">
+				<comment>微信原始ID，微信消息中的toUserName</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

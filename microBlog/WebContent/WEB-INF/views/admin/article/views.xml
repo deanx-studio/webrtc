@@ -1,0 +1,73 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  
+<tiles-definitions>
+
+	<definition name="article/recommend" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/recommend.jsp" />
+	</definition>
+	<definition name="article/keys" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/key_list.jsp" />
+	</definition>
+	<definition name="article/key_update" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/key_update.jsp" />
+	</definition>
+	<definition name="article/key_add" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/key_add.jsp" />
+	</definition>
+	<definition name="article/add" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/add.jsp" />
+	</definition>
+	<definition name="article/update" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/update.jsp" />
+	</definition>
+	<definition name="article/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/list.jsp" />
+	</definition>
+	
+	<definition name="menu/add" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/menu_add.jsp" />
+	</definition>
+	<definition name="menu/update" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/menu_update.jsp" />
+	</definition>
+	<definition name="menu/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/article/menu_list.jsp" />
+	</definition>
+	
+	<definition name="special/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/special/list.jsp" />
+	</definition>
+	<definition name="special/add" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/special/add.jsp" />
+	</definition>
+	<definition name="special/update" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/special/update.jsp" />
+	</definition>
+	
+	
+	<definition name="show/special0" extends="show_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/special/show.jsp" />
+	</definition>  
+	<definition name="display/special" extends="mobile_custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/special/show.jsp" />
+	</definition>  
+	
+	<definition name="media/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/media/list.jsp" />
+	</definition>
+	<definition name="media/add" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/media/add.jsp" />
+	</definition>
+	<definition name="media/update" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/media/update.jsp" />
+	</definition>
+	
+	<definition name="login" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/login.jsp" />
+	</definition>
+	<definition name="signup" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/signup.jsp" />
+	</definition>
+</tiles-definitions>

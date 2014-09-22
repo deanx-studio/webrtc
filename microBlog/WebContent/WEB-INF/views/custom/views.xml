@@ -1,0 +1,88 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  
+<tiles-definitions>
+	<definition name="custom/home" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/home.jsp" />
+	</definition>
+	<definition name="custom/lines" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/lines.jsp" />
+	</definition>
+	<definition name="custom/book" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/book.jsp" />
+	</definition>
+	<definition name="custom/order" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/order.jsp" />
+	</definition>
+	<definition name="custom/detail" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail.jsp" />
+	</definition>
+	<definition name="custom/detail0" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail0.jsp" />
+	</definition>
+	<definition name="custom/detail1" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail1.jsp" />
+	</definition>
+	<definition name="custom/detail2" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail2.jsp" />
+	</definition>
+	<definition name="custom/detail3" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail3.jsp" />
+	</definition>
+	<definition name="custom/detail4" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail4.jsp" />
+	</definition>
+	<definition name="custom/detail5" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail5.jsp" />
+	</definition>
+	<definition name="custom/detail6" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/detail6.jsp" />
+	</definition>
+	
+	<definition name="custom/groupList" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/groupList.jsp" />
+	</definition>
+	
+	<definition name="custom/mine_sel" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/mine_sel.jsp" />
+	</definition>
+	<definition name="custom/mine" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/mine.jsp" />
+	</definition>
+	<definition name="custom/private0" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private0.jsp" />
+	</definition>
+	<definition name="custom/private1" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private1.jsp" />
+	</definition>
+	<definition name="custom/private2" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private2.jsp" />
+	</definition>
+	<definition name="custom/private3" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private3.jsp" />
+	</definition>
+	<definition name="custom/private4" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private4.jsp" />
+	</definition>
+	<definition name="custom/private5" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private5.jsp" />
+	</definition>
+	<definition name="custom/private6" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/private6.jsp" />
+	</definition>
+	<definition name="custom/about" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/about.jsp" />
+	</definition>
+	<definition name="custom/recommend" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/recommend.jsp" />
+	</definition>
+	<definition name="custom/articles" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/articles.jsp" />
+	</definition>
+	
+	<definition name="custom/robot" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/custom/robot.jsp" />
+	</definition>	 
+	
+</tiles-definitions>

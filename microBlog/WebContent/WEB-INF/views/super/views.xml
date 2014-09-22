@@ -1,0 +1,28 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  
+<tiles-definitions>
+	<definition name="super/userList" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/user/list.jsp" />
+	</definition>
+	
+	<definition name="super/userAdd" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/user/add.jsp" />
+	</definition>
+	
+	<definition name="super/userUpdate" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/user/update.jsp" />
+	</definition>
+	
+	<definition name="super/accountList" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/account/list.jsp" />
+	</definition>
+	<definition name="super/accountEdit" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/account/update.jsp" />
+	</definition>
+	<definition name="super/accountAdd" extends="super_template">
+		<put-attribute name="content" value="/WEB-INF/views/super/account/add.jsp" />
+	</definition>
+	 
+</tiles-definitions>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="GroupDate" table="group_date">
+		<!-- 映射标识属性 -->
+		<id name="id" column="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<property name="productId" type="int">
+			<column name="product_id" not-null="true">
+				<comment>产品编码</comment>
+			</column>
+		</property>
+		<property name="startDate" type="string">
+			<column name="start_date" not-null="true">
+				<comment>出发日期</comment>
+			</column>
+		</property>
+		<property name="productName" type="string">
+			<column name="product_name" not-null="true">
+				<comment>产品名称</comment>
+			</column>
+		</property>
+	
+		<property name="bookCount" type="int">
+			<column name="book_count" not-null="true">
+				<comment>参团人数</comment>
+			</column>
+		</property>
+		
+		<property name="TotalCount" type="int">
+			<column name="total_count" not-null="true">
+				<comment>参团总数</comment>
+			</column>
+		</property>
+		
+		<property name="makeTime" type="string">
+			<column name="make_time" not-null="true">
+				<comment>创建日期</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

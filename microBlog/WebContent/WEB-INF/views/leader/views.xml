@@ -1,0 +1,23 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  
+<tiles-definitions>
+
+	<definition name="leader/home" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/leader/home.jsp" />
+	</definition>
+	
+	<definition name="leader/benifit" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/leader/benifit.jsp" />
+	</definition>
+	
+	<definition name="leader/orderList" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/leader/order_list.jsp" />
+	</definition>
+	
+	<definition name="leader/order" extends="custom_template">
+		<put-attribute name="content" value="/WEB-INF/views/leader/order.jsp" />
+	</definition>
+
+</tiles-definitions>

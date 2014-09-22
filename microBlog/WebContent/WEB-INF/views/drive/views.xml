@@ -1,0 +1,26 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="drive/home" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/drive/home.jsp" />
+	</definition>
+	<definition name="private/list" extends="admin_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/drive/private_list.jsp" />
+	</definition>
+	<definition name="private/detail" extends="admin_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/drive/private_detail.jsp" />
+	</definition>
+	<definition name="book/list" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/drive/book_list.jsp" />
+	</definition>
+	<definition name="drive/keyUI" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/drive/keys.jsp" />
+	</definition>
+	<definition name="drive/group/set" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/drive/groupList.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 
+ Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.order.model">
+ <class name="ProductInfo" table="o_product_info">
+  <!-- 映射标识属性 -->
+  <id column="id" name="id">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="identity"/>
+  </id>
+  <property generated="never" lazy="false" name="productName" type="string">
+   <column name="product_name" not-null="true">
+    <comment>产品名称</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="startValidate" type="string">
+   <column length="20" name="start_validate" not-null="true">
+    <comment>有效期起始日期</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="endValidate" type="string">
+   <column length="20" name="end_validate" not-null="true">
+    <comment>有效期截止日期,有效期</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productMemo" type="string">
+   <column name="product_memo">
+    <comment>产品备注说明</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="providerId" type="int">
+   <column name="provider_id">
+    <comment>供应商ID：0：本平台；其他外平台</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productNo" type="string">
+   <column length="64" name="product_no">
+    <comment>provider_id为非0时，在其他平台的产品编码</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="applyTo" type="string">
+   <column length="64" name="apply_to" not-null="true">
+    <comment>适用人群</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productDesc" type="string">
+   <column name="product_description">
+    <comment>产品说明</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="bookDesc" type="string">
+   <column name="book_description">
+    <comment>预订说明</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="imgURL" type="string">
+   <column name="img_url">
+    <comment>产品主图地址</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="shelvesState" type="int">
+   <column name="shelves_state">
+    <comment>产品状态：0-下架；1-上架</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="productType" type="int">
+   <column index="INX_PRODUCT_TYPE" name="product_type">
+    <comment>产品类型：0：普通门票；1：指定日期门票；2：酒店；3：境外自驾</comment>
+   </column>
+  </property>
+ </class>
+</hibernate-mapping>

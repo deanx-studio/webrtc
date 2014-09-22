@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 
+ Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+ <class name="Article" table="aticle_table">
+  <!-- 映射标识属性 -->
+  <id column="id" name="id">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="native"/>
+  </id>
+  <property generated="never" lazy="false" name="articleId" type="int">
+   <column name="article_id" not-null="true">
+    <comment>文章的key，对应菜单和注册等，100以内为系统指定</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="aticleState" type="int">
+   <column name="article_state" not-null="true">
+    <comment>文章状态，0：不可见，1：可见</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="toUserName" type="string">
+   <column length="64" name="to_user_name" not-null="true">
+    <comment>微信原始ID，微信消息中的toUserName</comment>
+   </column>
+  </property>
+  <property generated="never" lazy="false" name="seq" type="int">
+   <column name="seq" not-null="true">
+    <comment>相同articleId时排序值，数值较大的在前</comment>
+   </column>
+  </property>
+  <!-- 映射普通属性 -->
+  <property generated="never" lazy="false" name="title" type="string">
+   <column name="title" index="INX_ARTICLE_TITLE" length="128" />
+  </property>
+  <property generated="never" lazy="false" length="255" name="description"/>
+  <property column="pic_url" generated="never" lazy="false" length="128" name="picUrl"/>
+  <property generated="never" lazy="false" length="128" name="url"/>
+ </class>
+</hibernate-mapping>

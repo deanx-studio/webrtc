@@ -1,0 +1,22 @@
+<!DOCTYPE tiles-definitions PUBLIC
+      "-//Apache Software Foundation//DTD client Configuration 2.1//EN"
+      "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+	<definition name="search/view" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/search/view_search.jsp" />
+	</definition>
+	<definition name="search/product" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/search/product_search.jsp" />
+	</definition>
+	<definition name="search/catalog" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/search/catalog.jsp" />
+	</definition>
+	<definition name="search/catalog_result" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/search/catalog_result.jsp" />
+	</definition>
+</tiles-definitions>

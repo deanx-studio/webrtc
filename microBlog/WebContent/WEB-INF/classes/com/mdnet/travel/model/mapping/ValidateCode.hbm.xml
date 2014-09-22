@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 
+ Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+ <class name="ValidateCode" table="valid_code_tab">
+  <!-- 映射标识属性 -->
+  <id column="valid_code_id" name="vcId">
+   <!-- 指定使用identity主键生成策略 -->
+   <generator class="native"/>
+  </id>
+  <!-- 映射普通属性 -->
+  <property generated="never" lazy="false" length="20" name="traveler"/>
+  <property column="create_time" generated="never" lazy="false"
+   length="15" name="createTime"/>
+  <property column="valid_mobile" generated="never" lazy="false"
+   length="15" name="mobile"/>
+  <property column="valid_code" generated="never" lazy="false"
+   length="10" name="validCode"/>
+ </class>
+</hibernate-mapping>

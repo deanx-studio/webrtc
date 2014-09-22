@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 指定Hibernate映射文件的DTD信息 Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="MetaKeys" table="meta_keywords">
+		<!-- 映射标识属性 -->
+		<id column="id" name="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<property generated="never" lazy="false" name="pageUri"
+			type="string">
+			<column length="64" name="page_uri" not-null="false">
+				<comment>指定页面，空为所有页面</comment>
+			</column>
+		</property>
+		<property generated="never" lazy="false" name="keywords"
+			type="string">
+			<column sql-type="text" name="keywords" not-null="true">
+				<comment>关键字，以逗号分隔多个</comment>
+			</column>
+		</property>
+		
+		<property generated="never" lazy="false" name="modifyTime"
+			type="string">
+			<column length="20" name="modify_time" not-null="true">
+				<comment>最后修改时间</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

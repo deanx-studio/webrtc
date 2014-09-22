@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="Media" table="media_content">
+		<!-- 映射标识属性 -->
+		<id name="id" column="id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="native" />
+		</id>
+		
+		<property name="originalFileName" type="string">
+			<column name="original_file_name" not-null="true" length="255">
+				<comment>原始文件名</comment>
+			</column>
+		</property>
+		<property name="title" type="string">
+			<column name="title" not-null="true" length="255">
+				<comment>专题资料介绍的标题</comment>
+			</column>
+		</property>
+		<property name="mediaState" type="int">
+			<column name="media_state" not-null="true">
+				<comment>0:禁用；1启用</comment>
+			</column>
+		</property>
+		
+		<property name="toUserName" type="string">
+			<column name="to_user_name" not-null="true" length="64">
+				<comment>微信原始ID，微信消息中的toUserName</comment>
+			</column>
+		</property>
+		
+		<property name="media_url" type="string">
+			<column name="media_url" sql-type="text" not-null="true">
+				<comment>媒体地址</comment>
+			</column>
+		</property>
+		
+		<property name="mediaType" type="string">
+			<column name="media_type" not-null="true" length="32">
+				<comment>媒体类型,文件后缀</comment>
+			</column>
+		</property>
+		<property name="mediaMD5" type="string">
+			<column name="media_md5" not-null="true" length="64">
+				<comment>实体验证码</comment>
+			</column>
+		</property>
+		<property name="physicalPath" type="string">
+			<column name="physical_path" not-null="true">
+				<comment>物理保存路径</comment>
+			</column>
+		</property>
+		<property name="mediaSize" type="int">
+			<column name="media_size" not-null="true">
+				<comment>文件大小</comment>
+			</column>
+		</property>
+		<property name="maketime" type="string">
+			<column name="maketime" not-null="true" length="32">
+				<comment>媒体创建时间</comment>
+			</column>
+		</property>
+		
+	</class>
+</hibernate-mapping>

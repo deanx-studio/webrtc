@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Hibernate映射文件的DTD信息 -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Hibernate映射文件的根元素 -->
+<hibernate-mapping package="com.mdnet.travel.core.model">
+	<class name="ReqMessage" table="message_table">
+		<!-- 映射标识属性 -->
+		<id name="messageId" column="message_id">
+			<!-- 指定使用identity主键生成策略 -->
+			<generator class="identity" />
+		</id>
+		<!-- 映射普通属性 -->
+		<property name="createTime" column="create_time" length="32"/>
+		<property name="msgType" column="msg_type" length="15"/>
+		<property name="content" column="content"/>
+		<many-to-one lazy="false" name="customer" class="Customer" column="cus_id"/>
+	</class>
+</hibernate-mapping>
