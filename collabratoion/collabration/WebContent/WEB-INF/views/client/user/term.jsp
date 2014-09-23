@@ -102,45 +102,19 @@
 			href="javascript:audioCall();" class="btn btn-primary">音频呼叫</a>
 	</div>
 </div>
-<script src="${context}/resources/sipjs/sip-0.6.2.js"
-	type="text/javascript"></script>
+<script src="${context}/resources/sipml5/SIPml-api.js?svn=224"
+	type="text/javascript">
+	//
+</script>
+<script src="${context}/resources/sipml5/SIPml.js"
+	type="text/javascript">
+	//SIPml5基本类库
+</script>
+<script type="text/javascript"
+	src="${context}/resources/sipml5/SIPml5-ua.js">
+	//UA/UE侧控制
+</script>
 <script type="text/javascript">
-function callAgain(remotePeer)
-{
-	calledNumber.value = remotePeer;
-	startCallWin();
-	}
-	//test function 
-	/*
-	 (function () {
-	 var session;
-	 //Creates the anonymous user agent so that you can make calls
-	 var userAgent = new SIP.UA({
-	 traceSip: true
-	 });
-
-	 //here you determine whether the call has video and audio
-	 var options = {
-	 media: {
-	 constraints: {
-	 audio: true,
-	 video: true
-	 },
-	 render: {
-	 remote: {
-	 video: document.getElementById('video_local')
-	 },
-	 local: {
-	 video: document.getElementById('video_remote')
-	 }
-	 }
-	 }
-	 };
-	 //makes the call
-	 session = userAgent.invite('sip:bryan@wadearcade.onsip.com', options);
-	 })();
-	 */
-
 	function mouseout(event, obj) {
 		//发生闪烁现象
 		var from = event.relatedTarget ? event.relatedTarget
@@ -154,196 +128,12 @@ function callAgain(remotePeer)
 	}
 	function mouseover(event, obj) {
 		//发生闪烁现象
-		var from = event.relatedTarget ? event.relatedTarget
-				: event.fromElement;
-		var to = event.target ? event.target : event.toElement;
+		//var from = event.relatedTarget ? event.relatedTarget
+		//		: event.fromElement;
+		//var to = event.target ? event.target : event.toElement;
 		//if(obj.tagName=="VIDEO")
 		document.getElementById("op").style.display = "";
 	}
-	//Here you determine which media the stream has
-	var mediaConstraints = {
-		audio : true,
-		video : true
-	};
-	var domain = "${domain}";
-	var termId = "${termId}";
-	function startCallWin() {
-		$("#callModal").modal("show");
-	}
-	function videoCall() {
-		mediaConstraints.video = true;
-		$("#callModal").modal("hide");
-		//debugger;
-		startCall(calledNumber.value + "@" + domain);
-
-	}
-	function audioCall() {
-		mediaConstraints.video = false;
-		$("#callModal").modal("hide");
-		//debugger;
-		startCall(calledNumber.value + "@" + domain);
-
-	}
-	function huangup() {
-	}
-	function register() {
-		txtTishi.innerHTML = termId + "正注册到" + domain;
-		ua.start();
-		//debugger;
-		ua.register(/*options*/);
-	}
-
-	//sip模块初始化
-	var config = {
-		// EXAMPLE wsServers: "wss://my.websocketserver.com",
-		wsServers : [ "${wsServers}" ],
-		//wsServers : ["wss://deanx.cn:10062"],
-		
-		uri : "${uri}",
-		authorizationUser : "${authorizationUser}",
-		password : "${password}",
-		stunServers : ['stun:deanx.cn:3478'],
-		turnServers :  {
-			  urls:"turn:deanx.cn:3478",
-			  username:"lzj",
-			  password:"123456"
-			},
-		// FILL IN THOSE VALUES ^
-		register : true,
-		userAgentString : 'SIP.js/0.5.0-devel BAREBONES DEMO',
-		// viaHost : ['115.28.86.18'],
-		traceSip : true,
-		hackIpInContact : true,
-		usePreloadedRoute : true,
-	};
-	//设置基本参数，包括用户名等
-	var options = {
-		extraHeaders : [ 'Route: <sip:deanx.cn:5060;lr;sipml5-outbound;transport=udp>' ]
-	};
-
-	// 创建UA对象,并注册到域
-	var ua = new SIP.UA(config);
-
-	// 'sip:bryan@wadearcade.onsip.com';
-
-	var mediaStream;
-	var session;
-	var target;
-
-	// 媒体获取失败
-	function getUserMediaFailure(e) {
-		console.error('getUserMedia failed:', e);
-	}
-	function useSession(s) {
-		session = s;
-		session.on('bye', function() {
-			session = null;
-		});
-	}
-
-	//sip事件
-	ua.on('connected', function() {
-		console.log("--------connected!!!!!!");
-		txtTishi.innerHTML = "web socket 连接成功。正在注册......";
-	});
-
-	ua.on('registered', function() {
-		console.log("--------register!!!!!!");
-		txtTishi.innerHTML = "注册成功。";
-		btnCall.disabled = false;
-		btnRegister.disabled = true;
-	});
-
-	ua.on('unregistered', function() {
-		console.log("--------unregister!!!!!!");
-		txtTishi.innerHTML = "与服务器失联。";
-		btnCall.disabled = true;
-		btnRegister.disabled = false;
-	});
-	
-	ua.on('invite', function (incomingSession) {
-		console.log("--------invite!!!");
-		txtTishi.innerHTML = "呼入中.......";
-		
-        session = incomingSession;
-        session.accept({
-            media: {
-                render: {
-                    remote: {
-                        video: document.getElementById('video_remote')
-                    },
-                    local: {
-                        video: document.getElementById('video_local')
-                    }
-                }
-            }
-        });
-	});
-
-
-	// 媒体获取成功
-	function getUserMediaSuccess(stream) {
-		console.log('getUserMedia succeeded', stream);
-		mediaStream = stream;
-
-		//debugger;
-
-		// Makes a call
-		useSession(ua
-				.invite(
-						target,
-						{
-							extraHeaders : [ 'Route: <sip:deanx.cn:5060;lr;sipml5-outbound;transport=udp>' ],
-							media : {
-								stream : mediaStream,
-
-								render : {
-									remote : {
-										video : document
-												.getElementById('video_remote')
-									},
-									local : {
-										video : document
-												.getElementById('video_local')
-									}
-								}
-							}
-						}));
-
-	}
-
-	// var startCall = document.getElementById('btnCall');
-	var startCall = function(tar) {
-		target = tar;
-		console.log("--------------invoke call：" + target);
-		if (mediaStream) {
-			getUserMediaSuccess(mediaStream);
-		} else {
-			if (SIP.WebRTC.isSupported()) {
-				SIP.WebRTC.getUserMedia(mediaConstraints, getUserMediaSuccess,
-						getUserMediaFailure);
-			}
-		}
-	};
-
-	//注册
-	window.onload = function() {
-		readyTimer = setInterval(
-				function() {
-					if (document.readyState == "complete") {
-						//debugger;
-						clearInterval(readyTimer);
-						console
-								.log("----------------on interval, call register function!");
-						register();
-					}
-				}, 500);
-	};
-	//register();
 </script>
-<!-- 启动sip-js  -->
+<!-- SIP部分 -->
 
-<!--
-<script src="${context}/resources/sipjs/user_ua.js"
-	type="text/javascript"></script>
--->
