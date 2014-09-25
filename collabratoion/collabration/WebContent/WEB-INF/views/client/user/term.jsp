@@ -36,10 +36,14 @@
 <div class="row-fluid show-grid">
 	<div class="span4">
 		<div class="btn-group operater" id="op">
+			<button id="btnAnswer" type="button" class="btn btn-info"
+				onclick="javascript:Answer();" disabled>接听</button>
+			<button id="btnReject" type="button" class="btn btn-info"
+				onclick="javascript:hangup();" disabled>拒绝</button>
 			<button id="btnCall" type="button" class="btn btn-info"
 				onclick="javascript:startCallWin();" disabled>呼叫</button>
-			<button id="btnHangup" type="button" class="btn btn-warning"
-				onclick="javascript:huangup();" disabled>挂断</button>
+			<button id="btnHangUp" type="button" class="btn btn-warning"
+				onclick="javascript:hangup();" disabled>挂断</button>
 			<button id="btnRegister" type="button" class="btn btn-info"
 				onclick="javascript:register();">注册</button>
 		</div>
@@ -102,6 +106,16 @@
 			href="javascript:audioCall();" class="btn btn-primary">音频呼叫</a>
 	</div>
 </div>
+<audio id="audio_remote" autoplay="autoplay"></audio>
+<audio id="ringtone" loop
+	src="${context }/resources/sipml5/sounds/ringtone.wav"></audio>
+<audio id="ringbacktone" loop
+	src="${context }/resources/sipml5/sounds/ringbacktone.wav"></audio>
+<script type="text/javascript">
+	var domain = 'webrtc.vmeeting.cn';// 'rtctest';
+	var impi = '${termId}';
+	var pwd = '${password}';
+</script>
 <script src="${context}/resources/sipml5/SIPml-api.js?svn=224"
 	type="text/javascript">
 	//

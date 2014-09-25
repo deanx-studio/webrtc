@@ -7,7 +7,11 @@ var stackConfig;
 var oSipSessionRegister;
 var oSipSessionCall;
 
-// 等待页面加载完毕
+
+
+// 全局变量定义结束
+
+// 等待页面加载完毕进行初始化
 window.onload = function() {
 	videoLocal = document.getElementById("video_local");
 	videoRemote = document.getElementById("video_remote");
@@ -21,14 +25,14 @@ window.onload = function() {
 			initSIPml5();
 		}
 	}, 500);
-};
+};// end window.onload
 
 // 初始化SIPML5
 var initSIPml5 = function() {
 
 	console.log("init SIPml5......");
 	SIPml.init(postInit);
-};
+};// end initSIPml5
 
 // 检查浏览器是否支持webrtc，并设置基本参数
 var postInit = function() {
@@ -119,16 +123,17 @@ var postInit = function() {
 
 	// displays must be per session
 	// attachs video displays
+	// debugger;
 	if (SIPml.isWebRtc4AllSupported()) {
-		viewVideoLocal = document.getElementById("divVideoLocal");
-		viewVideoRemote = document.getElementById("divVideoRemote");
+		viewVideoLocal = videoLocal;
+		viewVideoRemote = videoRemote;
 		WebRtc4all_SetDisplays(viewVideoLocal, viewVideoRemote); // FIXME:
 		// move to
 		// SIPml.*
 		// API
 	} else {
-		viewVideoLocal = videoRemote;
-		viewVideoRemote = videoLocal;
+		viewVideoLocal = videoLocal;
+		viewVideoRemote = videoRemote;
 	}
 
 	if (!SIPml.isWebRtc4AllSupported() && !SIPml.isWebRtcSupported()) {
@@ -136,6 +141,7 @@ var postInit = function() {
 			window.location = 'https://www.google.com/intl/en/chrome/browser/';
 		}
 	}
+	// 各种检查结束
 
 	// 设置基本参数
 	console.log("浏览器检查完毕，设置基本参数。");
@@ -165,11 +171,12 @@ var postInit = function() {
 			name : 'language',
 			value : '\"en,fr\"'
 		} ]
-	};
+	};// end oConfigCall 赋值
 
-};
+};// end postInit
 
-// 注册
+/** ******界面控制函数开始*********** */
+// 执行注册
 var register = function() {
 	// enable notifications if not already done
 	if (window.webkitNotifications
@@ -188,8 +195,102 @@ var register = function() {
 		console.log('<b>Failed to start the SIP stack</b>');
 	}
 
-};
+};// end refister function
 
+// 弹出呼叫窗口
+var startCallWin = function() {
+	$("#callModal").modal("show");
+};// end startCallWin function
+
+// 开始一个视频呼叫
+var videoCall = function() {
+	// mediaConstraints.video = true;
+	$("#callModal").modal("hide");
+	// debugger;
+	startCall(calledNumber.value + "@" + domain, 'call-audiovideo');
+
+};// end videoCall
+
+// 开始一个音频呼叫
+var audioCall = function() {
+	// mediaConstraints.video = false;
+	$("#callModal").modal("hide");
+	// debugger;
+	startCall(calledNumber.value + "@" + domain, 'call-audio');
+
+};// end audioCall
+
+// 接听呼叫
+var Answer = function() {
+	txtTishi.innerHTML = '正在接听中......';
+	oSipSessionCall.accept(oConfigCall);
+};
+// 发起呼叫
+var startCall = function(callee, s_type) {
+	if (oSipSessionRegister != null) {
+
+		// debugger;
+		// create call session
+		oSipSessionCall = oSipStack.newSession(s_type, oConfigCall);
+		// make call
+		if (oSipSessionCall.call(callee) != 0) {
+			oSipSessionCall = null;
+			txtTishi.innerHTML = '创建呼叫失败';
+			btnCall.disabled = false;
+			btnHangUp.disabled = true;
+
+		}
+	} else {
+		txtTishi.innerHTML = "对不起，您还没有注册，请先注册。";
+	}
+};
+// 结束一个呼叫
+var hangup = function() {
+	if (oSipSessionCall) {
+
+		oSipSessionCall.hangup({
+			events_listener : {
+				events : '*',
+				listener : onSipEventSession
+			}
+		});
+	}
+};// end huangup
+
+// 做被叫时，本机铃音，提示用户摘机
+function startRingTone() {
+	try {
+		ringtone.play();
+	} catch (e) {
+	}
+}
+// 结束被叫振铃
+function stopRingTone() {
+	try {
+		ringtone.pause();
+	} catch (e) {
+	}
+}
+
+// 主叫播出后，被叫回复180ring，本机开始播放回铃音
+function startRingbackTone() {
+	try {
+		ringbacktone.play();
+	} catch (e) {
+	}
+}
+
+// 回铃音结束
+function stopRingbackTone() {
+	try {
+		ringbacktone.pause();
+	} catch (e) {
+	}
+}
+
+/** ******界面控制函数结束*********** */
+/** ******界面事件开始*********** */
+// 注册成功事件
 var onRegister = function(evtType, desc) {
 	btnRegister.disabled = true;
 	btnCall.disabled = false;
@@ -200,19 +301,34 @@ var onRegister = function(evtType, desc) {
 	else
 		txtTishi.innerHTML = evtType + ":" + desc;
 };
+// 挂机事件
+var onTerminating = function(evtType, desc) {
+	btnCall.disabled = false;
+	btnHangUp.disabled = true;
+	// case 'terminating':
+	// case 'terminated': {
+	if (evtType == "terminating")
+		txtTishi.innerHTML = '中断呼叫中...';
+	else
+		txtTishi.innerHTML = '呼叫已经中断';
+};
 
+// 注册失败事件
 var onUnregister = function(evtType, desc) {
 	btnRegister.disabled = false;
 	btnCall.disabled = true;
 	if (evtType == "terminated")
-		txtTishi.innerHTML = "服务终止("+desc+")";
+		txtTishi.innerHTML = "服务终止(" + desc + ")";
 	else if (evtType == "stopped")
-		txtTishi.innerHTML = "webrtc服务器终止("+desc+")";
+		txtTishi.innerHTML = "WS服务器终止(" + desc + ")";
+	else if (evtType == "failed_to_start")
+		txtTishi.innerHTML = "WS服务器连接失败(" + desc + ")";
 	else
 		txtTishi.innerHTML = evtType + ":" + desc;
 };
-
-// SIP事件
+/** ******界面事件结束*********** */
+/** ******SIP基本事件开始*********** */
+// SIP堆栈事件
 var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 	console.log('==stack event = ' + e.type);
 	switch (e.type) {
@@ -248,12 +364,35 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 	case 'stopped':
 	case 'failed_to_start':
 	case 'failed_to_stop': {
+
 		oSipSessionRegister = null;
 		oSipSessionCall = null;
 		onUnregister(e.type, e.description);
+
+		// 停止回铃音和振铃音
+		stopRingbackTone();
+		stopRingTone();
 		break;
 	}
 	case 'i_new_call': {
+		if (oSipSessionCall) {
+			e.newSession.hangup();
+		} else {
+			oSipSessionCall = e.newSession;
+			// start listening for events
+			oSipSessionCall.setConfiguration(oConfigCall);
+
+			btnReject.disabled = false;
+			btnAnswer.disabled = false;
+			btnCall.disabled = true;
+			btnHangUp.disabled = true;
+
+			startRingTone();
+
+			var sRemoteNumber = (oSipSessionCall.getRemoteFriendlyName() || 'unknown');
+			txtTishi.innerHTML = "来电提醒，号码：" + sRemoteNumber + "";
+			// showNotifICall(sRemoteNumber);
+		}
 		break;
 	}
 	case 'm_permission_requested': {
@@ -268,6 +407,8 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 		break;
 	}
 };
+
+// sip 呼叫事件
 var onSipEventSession = function(e /* SIPml.Session.Event */) {
 	console.log('==session event type= ' + e.type + ";desc=" + e.description);
 	switch (e.type) {
@@ -276,8 +417,21 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 		if (e.session == oSipSessionRegister) {
 			// 注册阶段
 			onRegister(e.type, e.description);
-		} else {
-			// 呼叫阶段
+		} else if (e.session == oSipSessionCall) {
+			{
+				btnCall.disabled = true;
+				btnHangUp.disabled = false;
+				// 呼叫阶段
+				// debugger;
+				if (e.type == 'connected')// invite 200 OK
+				{
+					stopRingbackTone();
+					stopRingTone();
+					txtTishi.innerHTML = "对方已经摘机";
+				} else {
+					txtTishi.innerHTML = "呼叫中......";
+				}
+			}
 		}
 		break;
 	}
@@ -287,6 +441,11 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 			onUnregister(e.type, e.description);
 			oSipSessionCall = null;
 			oSipSessionRegister = null;
+		} else if (e.session == oSipSessionCall) {
+			// debugger;
+			oSipSessionCall = null;
+			onTerminating(e.type, e.description);
+			stopRingbackTone();
 		}
 		break;
 	}
@@ -313,9 +472,21 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 		break;
 	}
 	case 'i_ao_request': {
+		if (e.session == oSipSessionCall) {
+			var iSipResponseCode = e.getSipResponseCode();
+			if (iSipResponseCode == 180 || iSipResponseCode == 183) {
+				startRingbackTone();
+				txtTishi.innerHTML = '等待对方接听，远端振铃中，(' + iSipResponseCode + ")";
+			}
+		}
 		break;
 	}
 	case 'm_early_media': {
+		if (e.session == oSipSessionCall) {
+			stopRingbackTone();
+			stopRingTone();
+			txt.innerHTML = '早期媒体启动';
+		}
 		break;
 	}
 	case 'm_local_hold_ok': {
@@ -366,16 +537,18 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 	}
 	}// end switch
 };
+/** ******SIP基本事件开始*********** */
 
+/** ******SIP基本参数初始化开始*********** */
 // 给stack 赋值，因为 只有在onSipEventStack事件函数声明后面events_listener的listener才有值
 stackConfig = {
 	realm : 'asterisk',
-	impi : '2001',
-	impu : 'sip:2001@rectest',
-	password : '2001',
+	impi : impi,
+	impu : 'sip:' + impi + '@' + domain,
+	password : pwd,
 	display_name : 'lzj',
-	websocket_proxy_url : 'ws://rtctest:10060',
-	outbound_proxy_url : 'udp://rtctest:5060',
+	websocket_proxy_url : 'ws://' + domain + ':10060',
+	outbound_proxy_url : 'udp://' + domain + ':5060',
 	ice_servers : "[{ url: 'stun:stun.l.google.com:19302'}, { url:'turn:user@numb.viagenie.ca', credential:'myPassword'}]",
 	enable_rtcweb_breaker : 'true',
 	events_listener : {
@@ -394,3 +567,4 @@ stackConfig = {
 		value : 'wang liu studio'
 	} ]
 };
+/** ******SIP基本参数初始化开始*********** */
