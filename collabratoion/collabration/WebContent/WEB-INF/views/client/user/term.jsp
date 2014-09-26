@@ -37,15 +37,15 @@
 	<div class="span4">
 		<div class="btn-group operater" id="op">
 			<button id="btnAnswer" type="button" class="btn btn-info"
-				onclick="javascript:Answer();" disabled>接听</button>
-			<button id="btnReject" type="button" class="btn btn-info"
-				onclick="javascript:hangup();" disabled>拒绝</button>
+				onclick="javascript:Answer();" style="display:none">接听</button>
+			<button id="btnReject" type="button" class="btn btn-danger"
+				onclick="javascript:hangup();" style="display:none">拒绝</button>
 			<button id="btnCall" type="button" class="btn btn-info"
-				onclick="javascript:startCallWin();" disabled>呼叫</button>
-			<button id="btnHangUp" type="button" class="btn btn-warning"
-				onclick="javascript:hangup();" disabled>挂断</button>
+				onclick="javascript:startCallWin();" style="display:none">呼叫</button>
+			<button id="btnHangUp" type="button" class="btn btn-danger"
+				onclick="javascript:hangup();" style="display:none">挂断</button>
 			<button id="btnRegister" type="button" class="btn btn-info"
-				onclick="javascript:register();">注册</button>
+				onclick="javascript:register();" style="display:">注册</button>
 		</div>
 		<video id="video_local" class="localVideo"
 			onmouseout="mouseout(event, this)"
@@ -112,9 +112,8 @@
 <audio id="ringbacktone" loop
 	src="${context }/resources/sipml5/sounds/ringbacktone.wav"></audio>
 <script type="text/javascript">
-	var domain = 'webrtc.vmeeting.cn';// 'rtctest';
-	var impi = '${termId}';
-	var pwd = '${password}';
+	var impi = "${termId}";
+	var webRoot = "${context}";
 </script>
 <script src="${context}/resources/sipml5/SIPml-api.js?svn=224"
 	type="text/javascript">

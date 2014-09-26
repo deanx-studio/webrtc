@@ -1,6 +1,7 @@
 package com.mdnet.travel.core.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 
 import javax.annotation.Resource;
 
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.mdnet.asterisk.action.OriginateAction;
 import com.mdnet.asterisk.ami.AMIBase;
 import com.mdnet.asterisk.ami.ResponseMsg;
+import com.mdnet.travel.core.model.TermConfig;
 import com.mdnet.travel.core.service.IAdminService;
 import com.mdnet.travel.core.service.ICallService;
+import com.mdnet.travel.core.service.impl.ParamConfig;
 
 @Controller
 @RequestMapping("/user")
@@ -48,6 +52,29 @@ public class UserController extends BaseController {
 		// this.mav.addObject("passwd", id);
 		this.mav.addObject("realm", "asterisk");
 		return this.mav;
+	}
+
+	@RequestMapping("/term/config")
+	@ResponseBody
+	public String getTermConfig(
+			@RequestParam(value = "termId", required = true) int termId) {
+		TermConfig tc = new TermConfig();
+		tc.setDomain(ParamConfig.inst().getDomain());
+		tc.setWebsocket_proxy_url(ParamConfig.inst().getWebsocket_proxy_url());
+		tc.setOutbound_proxy_url(ParamConfig.inst().getOutbound_proxy_url());
+		tc.setIce_servers(ParamConfig.inst().getIce_servers());
+		tc.setRealm(ParamConfig.inst().getRealm());
+		TerminateInfo ti = this.callService.findTerm(String.valueOf(termId));
+		if (ti != null) {
+			tc.setTermId(termId);
+			tc.setTermPwd(ti.getDevicePassword());
+			tc.setTermSate(ti.getChannelState());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			tc.setLastRegisterTime(sdf.format(ti.getLastRegisterTime()));
+			tc.setLastEndCallTime(sdf.format(ti.getLastCallEndTime()));
+		}
+		Gson g = new Gson();
+		return "[" + g.toJson(tc) + "]";
 	}
 
 	@RequestMapping("/term/add")

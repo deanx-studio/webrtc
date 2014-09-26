@@ -12,10 +12,10 @@
 	<!-- 配置数据库连接池（dbcp） -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" p:url="jdbc:mysql://115.28.86.18:3306/weixin"
-		p:driverClassName="com.mysql.jdbc.Driver" p:username="lzj"
-		p:password="GhostLiu" p:minEvictableIdleTimeMillis="1800000"
-		p:numTestsPerEvictionRun="3" p:testOnBorrow="true" p:testOnReturn="true"
-		p:testWhileIdle="true" p:validationQuery="SELECT 1" />
+		p:driverClassName="com.mysql.jdbc.Driver" p:username="lzj" p:password="GhostLiu"
+		p:minEvictableIdleTimeMillis="1800000" p:numTestsPerEvictionRun="3"
+		p:testOnBorrow="true" p:testOnReturn="true" p:testWhileIdle="true"
+		p:validationQuery="SELECT 1" />
 
 
 	<bean id="sessionFactory"
@@ -43,7 +43,7 @@
 	<!-- 每3秒查询一次数据库，将为发送的短信写入本地短信库 -->
 	<!-- 要调用的工作类，即任务处理类 -->
 	<bean id="orderQuery" class="com.mdnet.travel.core.model.OrderQueryJob">
-		
+
 	</bean>
 	<!-- 定义调用对象和调用对象的方法 -->
 	<bean id="queryOrderTask"
@@ -64,7 +64,8 @@
 			<ref bean="queryOrderTask" />
 		</property>
 		<property name="cronExpression">
-			<value>0 10 9,13,17,21 ? * *</value><!-- 每天9 13 17 21 时各执行一次 触发   0 * 9,13,17,21 ? * *-->
+			<value>0 10 9,13,17,21 ? * *</value><!-- 每天9 13 17 21 时各执行一次 触发 0 * 9,13,17,21 
+				? * * -->
 		</property>
 	</bean>
 	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序，随项目一起启动 -->
@@ -80,8 +81,24 @@
 	<!-- 每3秒查询一次数据库，将为发送的短信写入本地短信库 -->
 	<!-- 要调用的工作类，即任务处理类 -->
 	<bean id="quartzJob" class="com.mdnet.travel.core.model.QuartzJob">
-	
-	
+		<property name="domain">
+			<value>webrtc.vmeeting.cn</value>
+		</property>
+		<property name="websocket_proxy_url">
+			<value>ws://webrtc.vmeeting.cn:10060</value>
+		</property>
+		<property name="outbound_proxy_url">
+			<value>udp://webrtc.vmeeting.cn:5060</value>
+		</property>
+		<property name="ice_servers">
+			<!-- [{ url: 'stun:stun.l.google.com:19302'}, { url:'turn:user@numb.viagenie.ca', 
+				credential:'myPassword'}] -->
+			<value>[{ url: 'stun:stun.l.google.com:19302'}, {
+				url:'turn:user@numb.viagenie.ca', credential:'myPassword'}]</value>
+		</property>
+		<property name="realm">
+			<value>webrtc.vmeeting.cn</value>
+		</property>
 	</bean>
 	<!-- 定义调用对象和调用对象的方法 -->
 	<bean id="jobtask"

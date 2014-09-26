@@ -58,7 +58,7 @@
 		</property>
 		
 		<property name="Priority" type="int">
-			<column name="priority">
+			<column default="0" name="priority">
 				<comment>extension策略的序号</comment>
 			</column>
 		</property>

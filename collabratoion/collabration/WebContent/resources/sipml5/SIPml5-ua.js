@@ -1,4 +1,6 @@
 //定义全局变量
+var pwd;
+var domain;
 var oSipStack;
 var oConfigCall;
 var viewVideoLocal, viewVideoRemote;
@@ -7,8 +9,6 @@ var stackConfig;
 var oSipSessionRegister;
 var oSipSessionCall;
 
-
-
 // 全局变量定义结束
 
 // 等待页面加载完毕进行初始化
@@ -16,6 +16,52 @@ window.onload = function() {
 	videoLocal = document.getElementById("video_local");
 	videoRemote = document.getElementById("video_remote");
 	audioRemote = document.getElementById("audio_remote");
+	/** ******SIP基本参数初始化开始*********** */
+	// 给stack 赋值，因为 只有在onSipEventStack事件函数声明后面events_listener的listener才有值
+	stackConfig = {
+		enable_rtcweb_breaker : 'true',
+		events_listener : {
+			events : '*',
+			listener : onSipEventStack
+		},
+		enable_early_ims : 'true',
+		enable_media_stream_cache : "true",
+		bandwidth : "{ audio:64, video:512 }",
+		video_size : "{ minWidth: 640, minHeight:480, maxWidth: 640, maxHeight:480 }",
+		sip_headers : [ {
+			name : 'User-Agent',
+			value : 'IM-client/OMA1.0 sipML5-v1.2014.04.18'
+		}, {
+			name : 'Organization',
+			value : 'wang liu studio'
+		} ]
+	};
+
+	console.log("get term config......");
+	//从系统获取动态数据
+	var url = webRoot + "/user/term/config?termId=" + impi;
+	$.get(url, function(data, status) {
+		// debugger;
+		if (status == 'success') {
+			// debugger;
+			var conf = eval(data);
+			if (conf.length > 0) {
+				impi = "" + conf[0].termId;
+				pwd = conf[0].termPwd;
+				domain = conf[0].domain;
+				stackConfig.realm = conf[0].realm;
+				stackConfig.impi = "" + conf[0].termId;
+				stackConfig.impu = 'sip:' + impi + '@' + conf[0].domain;
+				stackConfig.password = conf[0].termPwd;
+				stackConfig.display_name = "" + conf[0].termId;// 'lzj',
+				stackConfig.websocket_proxy_url = conf[0].websocket_proxy_url;
+				stackConfig.outbound_proxy_url = conf[0].outbound_proxy_url;
+				stackConfig.ice_servers = conf[0].ice_servers;
+				// debugger;
+			}
+		}
+	});
+	/** ******SIP基本参数初始化结束*********** */
 
 	readyTimer = setInterval(function() {
 		if (document.readyState == "complete") {
@@ -173,6 +219,8 @@ var postInit = function() {
 		} ]
 	};// end oConfigCall 赋值
 
+	console.log("auto register server。");
+	register();
 };// end postInit
 
 /** ******界面控制函数开始*********** */
@@ -189,6 +237,8 @@ var register = function() {
 			.getItem('org.doubango.expert.disable_debug') == "true") ? "error"
 			: "info");
 
+	console.log(stackConfig.impi + " is registering, server:"
+			+ stackConfig.websocket_proxy_url + ",please wating......");
 	// create SIP stack
 	oSipStack = new SIPml.Stack(stackConfig);
 	if (oSipStack.start() != 0) {
@@ -236,8 +286,8 @@ var startCall = function(callee, s_type) {
 		if (oSipSessionCall.call(callee) != 0) {
 			oSipSessionCall = null;
 			txtTishi.innerHTML = '创建呼叫失败';
-			btnCall.disabled = false;
-			btnHangUp.disabled = true;
+			btnCall.style.display="";
+			btnHangUp.style.display="none";
 
 		}
 	} else {
@@ -265,7 +315,7 @@ function startRingTone() {
 	}
 }
 // 结束被叫振铃
-function stopRingTone() {
+function 放() {
 	try {
 		ringtone.pause();
 	} catch (e) {
@@ -287,13 +337,19 @@ function stopRingbackTone() {
 	} catch (e) {
 	}
 }
+//振铃音结束
+function stopRingTone() {
+    try { ringtone.pause(); }
+    catch (e) { }
+}
 
 /** ******界面控制函数结束*********** */
 /** ******界面事件开始*********** */
 // 注册成功事件
 var onRegister = function(evtType, desc) {
-	btnRegister.disabled = true;
-	btnCall.disabled = false;
+	btnRegister.style.display="none";
+	btnCall.style.display="";
+
 	if (evtType == "connecting")
 		txtTishi.innerHTML = "正在连接中(" + desc + ")";
 	else if (evtType == "connected")
@@ -303,8 +359,8 @@ var onRegister = function(evtType, desc) {
 };
 // 挂机事件
 var onTerminating = function(evtType, desc) {
-	btnCall.disabled = false;
-	btnHangUp.disabled = true;
+	btnCall.style.display="";
+	btnHangUp.style.display="none";
 	// case 'terminating':
 	// case 'terminated': {
 	if (evtType == "terminating")
@@ -315,8 +371,8 @@ var onTerminating = function(evtType, desc) {
 
 // 注册失败事件
 var onUnregister = function(evtType, desc) {
-	btnRegister.disabled = false;
-	btnCall.disabled = true;
+	btnRegister.style.display="";
+	btnCall.style.display="none";
 	if (evtType == "terminated")
 		txtTishi.innerHTML = "服务终止(" + desc + ")";
 	else if (evtType == "stopped")
@@ -382,10 +438,10 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 			// start listening for events
 			oSipSessionCall.setConfiguration(oConfigCall);
 
-			btnReject.disabled = false;
-			btnAnswer.disabled = false;
-			btnCall.disabled = true;
-			btnHangUp.disabled = true;
+			btnReject.style.display="";
+			btnAnswer.style.display="";
+			btnCall.style.display="none";
+			btnHangUp.style.display="none";
 
 			startRingTone();
 
@@ -419,8 +475,11 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 			onRegister(e.type, e.description);
 		} else if (e.session == oSipSessionCall) {
 			{
-				btnCall.disabled = true;
-				btnHangUp.disabled = false;
+				//debugger;
+				btnCall.style.display="none";
+				btnHangUp.style.display="";
+				btnAnswer.style.display = "none";
+				btnReject.style.display = "none";
 				// 呼叫阶段
 				// debugger;
 				if (e.type == 'connected')// invite 200 OK
@@ -446,6 +505,9 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 			oSipSessionCall = null;
 			onTerminating(e.type, e.description);
 			stopRingbackTone();
+			stopRingTone();
+			btnAnswer.style.display="none";
+			btnReject.style.display="none";
 		}
 		break;
 	}
@@ -537,34 +599,4 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 	}
 	}// end switch
 };
-/** ******SIP基本事件开始*********** */
-
-/** ******SIP基本参数初始化开始*********** */
-// 给stack 赋值，因为 只有在onSipEventStack事件函数声明后面events_listener的listener才有值
-stackConfig = {
-	realm : 'asterisk',
-	impi : impi,
-	impu : 'sip:' + impi + '@' + domain,
-	password : pwd,
-	display_name : 'lzj',
-	websocket_proxy_url : 'ws://' + domain + ':10060',
-	outbound_proxy_url : 'udp://' + domain + ':5060',
-	ice_servers : "[{ url: 'stun:stun.l.google.com:19302'}, { url:'turn:user@numb.viagenie.ca', credential:'myPassword'}]",
-	enable_rtcweb_breaker : 'true',
-	events_listener : {
-		events : '*',
-		listener : onSipEventStack
-	},
-	enable_early_ims : 'true',
-	enable_media_stream_cache : "true",
-	bandwidth : "{ audio:64, video:512 }",
-	video_size : "{ minWidth: 640, minHeight:480, maxWidth: 640, maxHeight:480 }",
-	sip_headers : [ {
-		name : 'User-Agent',
-		value : 'IM-client/OMA1.0 sipML5-v1.2014.04.18'
-	}, {
-		name : 'Organization',
-		value : 'wang liu studio'
-	} ]
-};
-/** ******SIP基本参数初始化开始*********** */
+/** ******SIP基本事件结束*********** */
