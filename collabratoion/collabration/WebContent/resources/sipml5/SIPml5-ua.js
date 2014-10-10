@@ -8,6 +8,7 @@ var videoRemote, videoLocal, audioRemote;
 var stackConfig;
 var oSipSessionRegister;
 var oSipSessionCall;
+var bInit = false;
 
 // 全局变量定义结束
 
@@ -19,6 +20,7 @@ window.onload = function() {
 	/** ******SIP基本参数初始化开始*********** */
 	// 给stack 赋值，因为 只有在onSipEventStack事件函数声明后面events_listener的listener才有值
 	stackConfig = {
+		realm : 'asterisk',
 		enable_rtcweb_breaker : 'true',
 		events_listener : {
 			events : '*',
@@ -43,7 +45,7 @@ window.onload = function() {
 	$.get(url, function(data, status) {
 		// debugger;
 		if (status == 'success') {
-			// debugger;
+			
 			var conf = eval(data);
 			if (conf.length > 0) {
 				impi = "" + conf[0].termId;
@@ -57,6 +59,7 @@ window.onload = function() {
 				stackConfig.websocket_proxy_url = conf[0].websocket_proxy_url;
 				stackConfig.outbound_proxy_url = conf[0].outbound_proxy_url;
 				stackConfig.ice_servers = conf[0].ice_servers;
+				bInit = true;
 				// debugger;
 			}
 		}
@@ -64,13 +67,14 @@ window.onload = function() {
 	/** ******SIP基本参数初始化结束*********** */
 
 	readyTimer = setInterval(function() {
-		if (document.readyState == "complete") {
+		console.log("-------- init timer on -------");
+		if (document.readyState == "complete" && bInit ) {
 			// debugger;
 			clearInterval(readyTimer);
 			console.log("页面加载完毕，初始化SIPml5!");
 			initSIPml5();
 		}
-	}, 500);
+	}, 1000);
 };// end window.onload
 
 // 初始化SIPML5
@@ -247,11 +251,6 @@ var register = function() {
 
 };// end refister function
 
-// 弹出呼叫窗口
-var startCallWin = function() {
-	$("#callModal").modal("show");
-};// end startCallWin function
-
 // 开始一个视频呼叫
 var videoCall = function() {
 	// mediaConstraints.video = true;
@@ -374,7 +373,7 @@ var onUnregister = function(evtType, desc) {
 	btnRegister.style.display="";
 	btnCall.style.display="none";
 	if (evtType == "terminated")
-		txtTishi.innerHTML = "服务终止(" + desc + ")";
+		txtTishi.innerHTML = "注册失败(" + desc + ")";
 	else if (evtType == "stopped")
 		txtTishi.innerHTML = "WS服务器终止(" + desc + ")";
 	else if (evtType == "failed_to_start")
@@ -496,7 +495,7 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 	}
 	case 'terminating':
 	case 'terminated': {
-		if (e.session == oSipSessionRegister) {
+		if (e.session == oSipSessionRegister && oSipSessionCall == null ) {
 			onUnregister(e.type, e.description);
 			oSipSessionCall = null;
 			oSipSessionRegister = null;
@@ -547,7 +546,7 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 		if (e.session == oSipSessionCall) {
 			stopRingbackTone();
 			stopRingTone();
-			txt.innerHTML = '早期媒体启动';
+			txtTishi.innerHTML = '媒体启动。'+ e.description;
 		}
 		break;
 	}

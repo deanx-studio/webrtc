@@ -35,14 +35,14 @@ public class UserController extends BaseController {
 
 	@RequestMapping("/home")
 	public ModelAndView homePage() {
-		this.createMav();
+		this.createMav(null);
 		this.mav.setViewName("user/home");
 		return this.mav;
 	}
 
 	@RequestMapping("/2calls")
 	public ModelAndView ShowTerminate() {
-		this.createMav();
+		this.createMav(null);
 
 		this.mav.setViewName("user/term2calls");
 
@@ -120,7 +120,7 @@ public class UserController extends BaseController {
 	public ModelAndView ShowTerminate(
 			@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "head", required = false) String head) {
-		this.createMav();
+		this.createMav(id);
 		if (head == null || head.compareTo("true") == 0)
 			this.mav.setViewName("user/term");
 		else
@@ -186,7 +186,7 @@ public class UserController extends BaseController {
 	@RequestMapping("/receiveCall")
 	public ModelAndView receiveCall(
 			@RequestParam(value = "id", required = true) String id) {
-		this.createMav();
+		this.createMav(id);
 		this.mav.setViewName("sipjs/receiveCall");
 		this.mav.addObject("id", id);
 		return this.mav;

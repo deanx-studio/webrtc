@@ -15,9 +15,10 @@
 				href="${context }/term/list">终端管理</a></li>
 
 			<li class="nav-header">操作员</li>
-			<li><a href="${context }/conducter/term">指挥协同</a></li>
+			<li><a href="${context }/conducter/videoTerm?id=${termId}">视频调度</a></li>
+			<li><a href="${context }/conducter/audioTerm?id=${termId}">音频调度</a></li>
 			<li class="nav-header">用户</li>
-			<li><a href="${context }/user/term">用户终端</a></li>
+			<li><a href="${context }/user/term?id=${termId}">用户终端</a></li>
 			<li class="nav-header">系统设置</li>
 			<li><a href="${context }/user/2calls">呼叫测试</a></li>
 			<li><a href="#">Link</a></li>

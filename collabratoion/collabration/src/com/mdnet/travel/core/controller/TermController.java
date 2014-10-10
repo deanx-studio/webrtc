@@ -74,7 +74,7 @@ public class TermController extends BaseController {
 		int itemCount = 0;
 		if (page != null)
 			pageNo = Integer.parseInt(page);
-		this.getMav();
+		this.createMav(null);
 		this.mav.setViewName("admin/term/list");
 		List<TerminateInfo> termList = this.callService.findTerm(pageNo);
 		this.mav.addObject("termList", termList);

@@ -83,7 +83,7 @@ public class ValidateHandlerInterceptor extends BaseController implements Handle
 		
 		System.out.println("test");
 		
-		mav = this.getMav();
+		mav = this.createMav(null);
 	
 		mav.addObject("traveler", traveler);
 		

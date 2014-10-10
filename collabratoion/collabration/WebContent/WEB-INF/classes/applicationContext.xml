@@ -81,6 +81,19 @@
 	<!-- 每3秒查询一次数据库，将为发送的短信写入本地短信库 -->
 	<!-- 要调用的工作类，即任务处理类 -->
 	<bean id="quartzJob" class="com.mdnet.travel.core.model.QuartzJob">
+
+		<property name="amiServer">
+			<value>webrtc.vmeeting.cn</value>
+		</property>
+		<property name="amiPort">
+			<value>5038</value>
+		</property>
+		<property name="amiUsername">
+			<value>lzj</value>
+		</property>
+		<property name="amiSecrect">
+			<value>LiuGhost</value>
+		</property>
 		<property name="domain">
 			<value>webrtc.vmeeting.cn</value>
 		</property>
@@ -94,10 +107,11 @@
 			<!-- [{ url: 'stun:stun.l.google.com:19302'}, { url:'turn:user@numb.viagenie.ca', 
 				credential:'myPassword'}] -->
 			<value>[{ url: 'stun:stun.l.google.com:19302'}, {
-				url:'turn:user@numb.viagenie.ca', credential:'myPassword'}]</value>
+				url:'turn:user@numb.viagenie.ca', credential:'myPassword'}]
+			</value>
 		</property>
 		<property name="realm">
-			<value>webrtc.vmeeting.cn</value>
+			<value>asterisk</value>
 		</property>
 	</bean>
 	<!-- 定义调用对象和调用对象的方法 -->

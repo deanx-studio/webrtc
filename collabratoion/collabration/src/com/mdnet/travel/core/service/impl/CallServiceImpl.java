@@ -72,16 +72,19 @@ public class CallServiceImpl implements ICallService {
 			ti.setChannelType("");
 			ti.setChannel("");
 			ti.setChannelStateDesc(msg.getPeerStatus());
-			if (msg.getPeerStatus().contains("Registered")) {
-				ti.setChannelState(-1);// 空闲
-				ti.setLastRegisterTime(this.convertDate(msg.getTime()));
-			} else {
-				ti.setChannelState(-2);// 不可用
-				ti.setChannelStateDesc("");
-				ti.setUnRegisterTime(this.convertDate(msg.getTime()));
+			if (ti.getChannelState() < 0) {
+				if (msg.getPeerStatus().contains("Registered")) {
+					ti.setChannelState(-1);// 空闲
+					ti.setLastRegisterTime(this.convertDate(msg.getTime()));
+				} else {
+					ti.setChannelState(-2);// 不可用
+					ti.setChannelStateDesc("");
+					ti.setUnRegisterTime(this.convertDate(msg.getTime()));
+				}
+
+				// 更新数据
+				termDAO.update(ti);
 			}
-			// 更新数据
-			termDAO.update(ti);
 		} else {
 			TerminateInfo ti = new TerminateInfo();
 			ti.setAddress(msg.getAddress());
@@ -257,7 +260,7 @@ public class CallServiceImpl implements ICallService {
 		if (peer != null)
 			query = " where Peer = 'SIP/" + peer + "'";
 		if (status != null)
-			query = " where ChannelState = " + status + "";
+			query = " where ChannelState " + status + "";
 		List<TerminateInfo> tis = this.termDAO.find(query, pageNo);
 		return tis;
 	}

@@ -20,9 +20,6 @@ import com.mdnet.travel.core.vo.UserListBean;
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
 
-	@Resource(name = IAdminService.SERVICE_NAME)
-	protected IAdminService adminService;
-
 	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
 	public ModelAndView adminPage() {
 		this.mav = new ModelAndView();
@@ -76,7 +73,7 @@ public class AdminController extends BaseController {
 		int itemCount = 0;
 		if (page != null)
 			pageNo = Integer.parseInt(page);
-		this.getMav();
+		this.createMav(null);
 		this.mav.setViewName("admin/userList");
 		List<UserInfo> userList = this.adminService.findAdmin(pageNo);
 		this.mav.addObject("userList", userList);

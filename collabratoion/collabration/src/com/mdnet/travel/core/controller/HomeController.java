@@ -16,14 +16,14 @@ public class HomeController extends BaseController {
 
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public ModelAndView showHomePage() {
-		this.createMav();
+		this.createMav(null);
 		this.mav.setViewName("login");
 		return mav;
 	}
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView loginPage() {
-		this.createMav();
+		this.createMav(null);
 		this.mav.setViewName("login");
 		return mav;
 	}

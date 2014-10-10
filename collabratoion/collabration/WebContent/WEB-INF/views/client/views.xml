@@ -6,9 +6,13 @@
 	<definition name="user/home" extends="client_template">
 		<put-attribute name="content" value="/WEB-INF/views/client/home.jsp" />
 	</definition>
-	<definition name="conduct/term" extends="client_template">
+	<definition name="conduct/videoTerm" extends="client_template">
 		<put-attribute name="content"
-			value="/WEB-INF/views/client/conduct/term.jsp" />
+			value="/WEB-INF/views/client/conduct/videoTerm.jsp" />
+	</definition>
+	<definition name="conduct/audioTerm" extends="client_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/conduct/audioTerm.jsp" />
 	</definition>
 	<definition name="user/term" extends="client_template">
 		<put-attribute name="content"
@@ -33,8 +37,12 @@
 		<put-attribute name="content"
 			value="/WEB-INF/views/client/user/term.jsp" />
 	</definition>
-	<definition name="nohead/conduct/term" extends="nohead_template">
+	<definition name="nohead/conduct/videoTerm" extends="nohead_template">
 		<put-attribute name="content"
-			value="/WEB-INF/views/client/conduct/term.jsp" />
+			value="/WEB-INF/views/client/conduct/videoTerm.jsp" />
+	</definition>
+	<definition name="nohead/conduct/audioTerm" extends="nohead_template">
+		<put-attribute name="content"
+			value="/WEB-INF/views/client/conduct/audioTerm.jsp" />
 	</definition>
 </tiles-definitions>

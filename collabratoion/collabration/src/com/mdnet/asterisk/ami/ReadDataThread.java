@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import com.mdnet.asterisk.action.LoginActionMsg;
 import com.mdnet.asterisk.ami.event.EventNotify;
+import com.mdnet.travel.core.service.impl.ParamConfig;
 
 public class ReadDataThread extends Thread {
 	private BufferedReader reader = null;
@@ -140,8 +141,8 @@ public class ReadDataThread extends Thread {
 
 	private void sendLogin() {
 		LoginActionMsg msg = new LoginActionMsg();
-		msg.setUsername("lzj");
-		msg.setSecret("GhostLiu");
+		msg.setUsername(ParamConfig.inst().getAmiUsername());
+		msg.setSecret(ParamConfig.inst().getAmiSecrect());
 
 		try {
 

@@ -37,13 +37,13 @@
 	<div class="span4">
 		<div class="btn-group operater" id="op">
 			<button id="btnAnswer" type="button" class="btn btn-info"
-				onclick="javascript:Answer();" style="display:none">接听</button>
+				onclick="javascript:Answer();" style="display: none">接听</button>
 			<button id="btnReject" type="button" class="btn btn-danger"
-				onclick="javascript:hangup();" style="display:none">拒绝</button>
+				onclick="javascript:hangup();" style="display: none">拒绝</button>
 			<button id="btnCall" type="button" class="btn btn-info"
-				onclick="javascript:startCallWin();" style="display:none">呼叫</button>
+				onclick="javascript:startCallWin();" style="display: none">呼叫</button>
 			<button id="btnHangUp" type="button" class="btn btn-danger"
-				onclick="javascript:hangup();" style="display:none">挂断</button>
+				onclick="javascript:hangup();" style="display: none">挂断</button>
 			<button id="btnRegister" type="button" class="btn btn-info"
 				onclick="javascript:register();" style="display:">注册</button>
 		</div>
@@ -99,6 +99,10 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal-body">
+			<div class="row-fluid text-center" id="termList"></div>
+
+		</div>
 	</div>
 	<div class="modal-footer">
 		<span class="text-left" id="txtResult"></span> <a
@@ -146,6 +150,70 @@
 		//var to = event.target ? event.target : event.toElement;
 		//if(obj.tagName=="VIDEO")
 		document.getElementById("op").style.display = "";
+	}
+
+	// 弹出呼叫窗口
+	var startCallWin = function() {
+
+		//填充终端状态
+		var url = webRoot + "/term/search?status=>-3";
+		$
+				.get(
+						url,
+						function(data, status) {
+							if (status == 'success') {
+								debugger;
+								var terms = eval(data);
+								var listStr = "";
+								//
+								var nouse_img = "${context}/resources/img/phone_nouse.png";
+								var un_img = "${context}/resources/img/phone_unregister.png";
+								var ring_img = "${context}/resources/img/phone_ring.kpg";
+								var idle_img = "${context}/resources/img/phone_idle.png";
+								var busy_img = "${context}/resources/img/phone_busy.png";
+								for (var i = 0; i < terms.length; i++) {
+
+									var img = "";
+									var stateStr = "";
+									if (terms[i].ChannelState == -3) {
+										img = nouse_img;//未使用
+										stateStr = "未放号";
+									} else if (terms[i].ChannelState == -2) {
+										img = un_img;//未注册
+										stateStr = "未注册";
+									} else if (terms[i].ChannelState == -1) {
+										img = idle_img;//空闲
+										stateStr = "空闲";
+									} else if (terms[i].ChannelState == 1) {
+										img = ring_img;//振铃
+										stateStr = "振铃中";
+									} else {
+										img = busy_img;//通话中
+										stateStr = "通话中";
+									}
+									var termId = terms[i].Peer.substr(4);
+									var state = terms[i].ChannelState;
+
+									listStr += '<div class="span5" style="min-height:99px;max-width:110px;width:100px;" onclick="selPhone('
+											+ termId + ',' + state + ')">';
+									listStr += '<div class="mini-layout fluid">';
+									listStr += '<div class="mini-layout-sidebar">';
+									listStr += '<img src="'+img+'"	style="width: 40px; height: 40px;">';
+									listStr += '</div>';
+									listStr += '<div class="mini-layout-body">';
+									listStr += termId + '<br />状态：'+stateStr;
+									listStr += '</div></div></div>';
+								}//end for
+								termList.innerHTML = listStr;
+							}//end if
+						});
+
+		$("#callModal").modal("show");
+	};
+	// end startCallWin function
+
+	function selPhone(termId, state) {
+		calledNumber.value = termId;
 	}
 </script>
 <!-- SIP部分 -->

@@ -9,7 +9,44 @@ public class ParamConfig {
 	private String outbound_proxy_url;
 	private String ice_servers;
 	private String realm;
+	private String amiServer;
+	private int amiPort;
+	private String amiUsername;
+	private String amiSecrect;
 	
+
+	public String getAmiUsername() {
+		return amiUsername;
+	}
+
+	public void setAmiUsername(String amiUsername) {
+		this.amiUsername = amiUsername;
+	}
+
+	public String getAmiSecrect() {
+		return amiSecrect;
+	}
+
+	public void setAmiSecrect(String amiSecrect) {
+		this.amiSecrect = amiSecrect;
+	}
+
+	public String getAmiServer() {
+		return amiServer;
+	}
+
+	public void setAmiServer(String amiServer) {
+		this.amiServer = amiServer;
+	}
+
+	public int getAmiPort() {
+		return amiPort;
+	}
+
+	public void setAmiPort(int amiPort) {
+		this.amiPort = amiPort;
+	}
+
 	public String getDomain() {
 		return domain;
 	}
