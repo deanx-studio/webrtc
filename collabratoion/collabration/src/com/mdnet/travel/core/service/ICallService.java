@@ -5,6 +5,7 @@ import java.util.List;
 import net.zhinet.travel.pojo.basepojo.CallHistory;
 import net.zhinet.travel.pojo.basepojo.TerminateInfo;
 
+import com.mdnet.asterisk.ami.event.Bridge;
 import com.mdnet.asterisk.ami.event.EventMsg;
 import com.mdnet.asterisk.ami.event.Hangup;
 import com.mdnet.asterisk.ami.event.NewChannel;
@@ -31,5 +32,7 @@ public interface ICallService {
 
 	List<TerminateInfo> listTerm(String status, String peer, String name,
 			int pageNo, int pageCount);
+
+	void bridge(Bridge msg);
 	 
 }

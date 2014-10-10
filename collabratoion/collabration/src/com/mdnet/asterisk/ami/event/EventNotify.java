@@ -7,7 +7,6 @@ import com.mdnet.travel.core.model.QuartzJob;
 public class EventNotify {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	private String eventMsg;
-	
 
 	public void fireEvent(String EventMsg) {
 		this.eventMsg = EventMsg;
@@ -56,6 +55,10 @@ public class EventNotify {
 			Hangup msg = new Hangup();
 			msg.parse(evtName, evtMsg);
 			return msg;
+		} else if (evtName.contains("Bridge")) {
+			Bridge msg = new Bridge();
+			msg.parse(evtName, evtMsg);
+			return msg;
 		} else {
 			EventMsg msg = new EventMsg();
 			msg.setEvent(evtName);
@@ -65,9 +68,9 @@ public class EventNotify {
 	}
 
 	public void onEvent(EventMsg msg) {
-		
+
 		logger.info("------" + msg.getTime() + "->recv event:" + msg.getEvent()
-				+ "(" + msg.getClass()+")");
+				+ "(" + msg.getClass() + ")");
 		if (msg.getEvent().contains("PeerStatus")) {
 
 			QuartzJob.callService.updateRegister((PeerStatusMsg) msg);
@@ -85,6 +88,8 @@ public class EventNotify {
 			QuartzJob.callService.updateCall(msg);
 		} else if (msg.getEvent().contains("Hangup")) {
 			QuartzJob.callService.hangup((Hangup) msg);
+		} else if (msg.getEvent().contains("Bridge")) {
+			QuartzJob.callService.bridge((Bridge) msg);
 		}
 		// if (msg.getEvent().contains("PeerStatus")) {
 		// PeerStatus peerStatus = (PeerStatus) msg;

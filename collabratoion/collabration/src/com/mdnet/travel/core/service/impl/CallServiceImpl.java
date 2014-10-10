@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mdnet.asterisk.ami.event.Bridge;
 import com.mdnet.asterisk.ami.event.EventMsg;
 import com.mdnet.asterisk.ami.event.Hangup;
 import com.mdnet.asterisk.ami.event.NewChannel;
@@ -263,6 +264,32 @@ public class CallServiceImpl implements ICallService {
 			query = " where ChannelState " + status + "";
 		List<TerminateInfo> tis = this.termDAO.find(query, pageNo);
 		return tis;
+	}
+
+	@Override
+	public void bridge(Bridge msg) {
+
+		int pageNo = 0;
+		String where = " where Channel = '" + msg.getChannel1() + "'";
+		List<TerminateInfo> terms1 = termDAO.find(where, pageNo);
+		TerminateInfo term1 = null;
+		if (terms1 != null && terms1.size() > 0)
+			term1 = terms1.get(0);
+		where = " where Channel = '" + msg.getChannel2() + "'";
+		List<TerminateInfo> terms2 = termDAO.find(where, pageNo);
+		TerminateInfo term2 = null;
+		if (terms2 != null && terms2.size() > 0)
+			term2 = terms2.get(0);
+		if (msg.getBridgestate().contains("Unlink")) {
+			if (term1 != null) {
+				term1.setChannelState(-1);
+				this.termDAO.update(term1);
+			}
+			if (term2 != null) {
+				term2.setChannelState(-1);
+				this.termDAO.update(term2);
+			}
+		}
 	}
 
 }
