@@ -4,17 +4,21 @@ var domain;
 var oSipStack;
 var oConfigCall;
 var viewVideoLocal, viewVideoRemote;
-var videoRemote, videoLocal, audioRemote;
+var videoRemote, videoLocal;
+var audioRemote;
 var stackConfig;
 var oSipSessionRegister;
 var oSipSessionCall;
 var bInit = false;
+var funName;
 
 // 全局变量定义结束
 
 // 等待页面加载完毕进行初始化
 window.onload = function() {
-	btnCall.dislabled = false;
+	//启动终端状态查询定时器
+	setStateUpdateTimer();
+	
 	videoLocal = document.getElementById("video_local");
 	videoRemote = document.getElementById("video_remote");
 	audioRemote = document.getElementById("audio_remote");
@@ -253,20 +257,20 @@ var register = function() {
 };// end refister function
 
 // 开始一个视频呼叫
-var videoCall = function() {
+var videoCall = function(calledNumber) {
 	// mediaConstraints.video = true;
-	$("#callModal").modal("hide");
+	//$("#callModal").modal("hide");
 	// debugger;
-	startCall(calledNumber.value + "@" + domain, 'call-audiovideo');
+	startCall(calledNumber + "@" + domain, 'call-audiovideo');
 
 };// end videoCall
 
 // 开始一个音频呼叫
-var audioCall = function() {
+var audioCall = function(calledNumber) {
 	// mediaConstraints.video = false;
-	$("#callModal").modal("hide");
+	//$("#callModal").modal("hide");
 	// debugger;
-	startCall(calledNumber.value + "@" + domain, 'call-audio');
+	startCall(calledNumber + "@" + domain, 'call-audio');
 
 };// end audioCall
 
@@ -286,8 +290,8 @@ var startCall = function(callee, s_type) {
 		if (oSipSessionCall.call(callee) != 0) {
 			oSipSessionCall = null;
 			txtTishi.innerHTML = '创建呼叫失败';
-			btnCall.style.display="";
-			btnHangUp.style.display="none";
+			//btnCall.style.display="";
+			btnAbort.disabled = true;
 
 		}
 	} else {
@@ -315,7 +319,7 @@ function startRingTone() {
 	}
 }
 // 结束被叫振铃
-function 放() {
+function ringToneClose() {
 	try {
 		ringtone.pause();
 	} catch (e) {
@@ -349,8 +353,8 @@ function stopRingTone() {
 var onRegister = function(evtType, desc) {
 //	debugger;
 	btnRegister.style.display="none";
-	document.getElementById("btnCall").style.display="block";
-	btnCall.disabled = false;
+	//document.getElementById("btnCall").style.display="block";
+	//btnCall.disabled = false;
 
 	if (evtType == "connecting")
 		txtTishi.innerHTML = "正在连接中(" + desc + ")";
@@ -361,8 +365,9 @@ var onRegister = function(evtType, desc) {
 };
 // 挂机事件
 var onTerminating = function(evtType, desc) {
-	btnCall.style.display="";
-	btnHangUp.style.display="none";
+	//btnCall.style.display="";
+	//btnHangUp.style.display="none";
+	btnAbort.disabled = true;
 	// case 'terminating':
 	// case 'terminated': {
 	if (evtType == "terminating")
@@ -373,8 +378,8 @@ var onTerminating = function(evtType, desc) {
 
 // 注册失败事件
 var onUnregister = function(evtType, desc) {
-	btnRegister.style.display="";
-	btnCall.style.display="none";
+	//btnRegister.style.display="";
+	//btnCall.style.display="none";
 	if (evtType == "terminated")
 		txtTishi.innerHTML = "注册失败(" + desc + ")";
 	else if (evtType == "stopped")
@@ -433,17 +438,12 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 		break;
 	}
 	case 'i_new_call': {
-		if (oSipSessionCall) {
+		if (oSipSessionCall) {//重复的呼叫
 			e.newSession.hangup();
 		} else {
 			oSipSessionCall = e.newSession;
 			// start listening for events
 			oSipSessionCall.setConfiguration(oConfigCall);
-
-			btnReject.style.display="";
-			btnAnswer.style.display="";
-			btnCall.style.display="none";
-			btnHangUp.style.display="none";
 
 			startRingTone();
 
@@ -477,11 +477,17 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 			onRegister(e.type, e.description);
 		} else if (e.session == oSipSessionCall) {
 			{
+				btnAbort.disabled = false;
 				//debugger;
-				btnCall.style.display="none";
-				btnHangUp.style.display="";
-				btnAnswer.style.display = "none";
-				btnReject.style.display = "none";
+				//改变按钮状态
+				btnAbort.innerHTML="终止"+funName;
+				btnMonitor.disabled = true;
+				btnInsert.disabled = true;
+				btnDismantle.disabled = true;
+				btnSecrect.disabled = true;
+				btnInstead.disabled = true;
+				btnVideoCall.disabled = true;
+				btnAudioCall.disabled = true;
 				// 呼叫阶段
 				// debugger;
 				if (e.type == 'connected')// invite 200 OK
@@ -508,9 +514,10 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 			onTerminating(e.type, e.description);
 			stopRingbackTone();
 			stopRingTone();
-			btnAnswer.style.display="none";
-			btnReject.style.display="none";
+			//btnAnswer.style.display="none";
+			//btnReject.style.display="none";
 		}
+		btnAbort.innerHTML = "终止";
 		break;
 	}
 	case 'm_stream_video_local_added': {

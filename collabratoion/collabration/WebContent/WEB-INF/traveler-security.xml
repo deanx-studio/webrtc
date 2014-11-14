@@ -14,7 +14,11 @@
 			authentication-failure-url="/login" default-target-url="/loginRoot" />
 		<logout logout-url="/static/j_spring_security_logout" />
 		<intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN,ROLE_CONDUCTER')" />
+		<!-- 
 		<intercept-url pattern="/term/**" access="hasAnyRole('ROLE_ADMIN,ROLE_CONDUCTER')" />
+		 
+		<intercept-url pattern="/conducter/**" access="hasAnyRole('ROLE_ADMIN,ROLE_CONDUCTER')" />
+		-->
 		<intercept-url pattern="/client/**" access="hasRole('ROLE_USER')" />
 		<remember-me key="travelerKey" token-validity-seconds="2419200" />
 
@@ -27,8 +31,6 @@
 			<password-encoder hash="md5" />
 		</authentication-provider>
 	</authentication-manager>
-
-
 
 	<beans:import resource="traveler-security-jdbc.xml" />
 </beans:beans>

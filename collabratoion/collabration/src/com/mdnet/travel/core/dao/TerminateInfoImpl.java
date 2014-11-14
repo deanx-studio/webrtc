@@ -16,6 +16,18 @@ public class TerminateInfoImpl extends BasicDAOImpl<TerminateInfo> implements
 		ITerminateInfo {
 
 	@Override
+	public void update(TerminateInfo entity) {
+		if(entity.getChannelState() == -2)
+		{
+			System.out.println("find out it!");
+		}
+		System.out.println("*******************Channel:" + entity.getChannel()
+				+ "channelState:" + entity.getChannelState() + ",ChannelDesc:"
+				+ entity.getChannelStateDesc());
+		super.update(entity);
+	}
+
+	@Override
 	public List<TerminateInfo> find(String where, int pageNo) {
 		final String queryString = "from TerminateInfo " + where;
 		final int length = 20;

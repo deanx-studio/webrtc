@@ -4,7 +4,7 @@
 	String context = request.getContextPath();
 	request.setAttribute("context", context);
 	//全局参数
-	request.setAttribute("compName", "德安智能工作室");
-	request.setAttribute("projectName", "德安智能通信");
-	request.setAttribute("pageTitle", "德安通信");
+	request.setAttribute("compName", "北京泰乐德信息技术有限公司");
+	request.setAttribute("projectName", "泰乐德移动指挥调度");
+	request.setAttribute("pageTitle", "泰乐德");
 %>

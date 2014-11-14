@@ -51,8 +51,12 @@ public class EventNotify {
 			NewExten msg = new NewExten();
 			msg.parse(evtName, evtMsg);
 			return msg;
-		} else if (evtName.contains("Hangup")) {
+		} else if (evtName.compareTo("Hangup")==0) {
 			Hangup msg = new Hangup();
+			msg.parse(evtName, evtMsg);
+			return msg;
+		} else if (evtName.compareTo("HangupRequest")==0) {
+			HangupRequest msg = new HangupRequest();
 			msg.parse(evtName, evtMsg);
 			return msg;
 		} else if (evtName.contains("Bridge")) {
@@ -74,11 +78,9 @@ public class EventNotify {
 		if (msg.getEvent().contains("PeerStatus")) {
 
 			QuartzJob.callService.updateRegister((PeerStatusMsg) msg);
-		}
-		// else if (msg.getEvent().contains("FullyBooted")) {
-		//
-		// }
-		else if (msg.getEvent().contains("Newchannel")) {
+		} else if (msg.getEvent().compareTo("HangupRequest") == 0) {
+			QuartzJob.callService.hangupRequest((HangupRequest) msg);
+		} else if (msg.getEvent().contains("Newchannel")) {
 			QuartzJob.callService.newChannel((NewChannel) msg);
 		} else if (msg.getEvent().contains("VarSet")) {
 
@@ -86,7 +88,7 @@ public class EventNotify {
 			QuartzJob.callService.updateCall(msg);
 		} else if (msg.getEvent().contains("Newexten")) {
 			QuartzJob.callService.updateCall(msg);
-		} else if (msg.getEvent().contains("Hangup")) {
+		} else if (msg.getEvent().compareTo("Hangup") == 0) {
 			QuartzJob.callService.hangup((Hangup) msg);
 		} else if (msg.getEvent().contains("Bridge")) {
 			QuartzJob.callService.bridge((Bridge) msg);

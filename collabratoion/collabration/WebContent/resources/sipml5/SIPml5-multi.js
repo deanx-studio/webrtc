@@ -7,14 +7,14 @@ var viewVideoLocal, viewVideoRemote;
 var videoRemote, videoLocal, audioRemote;
 var stackConfig;
 var oSipSessionRegister;
-var oSipSessionCall;
+var oSipSessionCall = new Array(4);
 var bInit = false;
 
 // 全局变量定义结束
 
 // 等待页面加载完毕进行初始化
 window.onload = function() {
-	btnCall.dislabled = false;
+	// btnCall.dislabled = false;
 	videoLocal = document.getElementById("video_local");
 	videoRemote = document.getElementById("video_remote");
 	audioRemote = document.getElementById("audio_remote");
@@ -41,12 +41,12 @@ window.onload = function() {
 	};
 
 	console.log("get term config......");
-	//从系统获取动态数据
+	// 从系统获取动态数据
 	var url = webRoot + "/user/term/config?termId=" + impi;
 	$.get(url, function(data, status) {
 		// debugger;
 		if (status == 'success') {
-			
+
 			var conf = eval(data);
 			if (conf.length > 0) {
 				impi = "" + conf[0].termId;
@@ -69,7 +69,7 @@ window.onload = function() {
 
 	readyTimer = setInterval(function() {
 		console.log("-------- init timer on -------");
-		if (document.readyState == "complete" && bInit ) {
+		if (document.readyState == "complete" && bInit) {
 			// debugger;
 			clearInterval(readyTimer);
 			console.log("页面加载完毕，初始化SIPml5!");
@@ -257,7 +257,11 @@ var videoCall = function() {
 	// mediaConstraints.video = true;
 	$("#callModal").modal("hide");
 	// debugger;
-	startCall(calledNumber.value + "@" + domain, 'call-audiovideo');
+	// 设置远程会话区域
+	oConfigCall.video_remote = document.getElementById("video_remote_"
+			+ txtWindow.value);
+	startCall(calledNumber.value + "@" + domain, 'call-audiovideo',
+			txtWindow.value);
 
 };// end videoCall
 
@@ -266,28 +270,35 @@ var audioCall = function() {
 	// mediaConstraints.video = false;
 	$("#callModal").modal("hide");
 	// debugger;
-	startCall(calledNumber.value + "@" + domain, 'call-audio');
+	startCall(calledNumber.value + "@" + domain, 'call-audio', txtWindow.value);
 
 };// end audioCall
 
 // 接听呼叫
 var Answer = function() {
 	txtTishi.innerHTML = '正在接听中......';
-	oSipSessionCall.accept(oConfigCall);
+	oSipSessionCall[txtWindow.value].accept(oConfigCall);
 };
 // 发起呼叫
-var startCall = function(callee, s_type) {
+var startCall = function(callee, s_type, callId) {
 	if (oSipSessionRegister != null) {
 
-		// debugger;
+		debugger;
+		if (s_type == "call-audio") {
+			document.getElementById("video_remote_" + callId).setAttribute("class","conducterAudio");
+		}
+		// 隐藏挂机按钮
+		document.getElementById("btnHangup_" + callId).style.display = "";
+		document.getElementById("btnCall_" + callId).style.display = "none";
 		// create call session
-		oSipSessionCall = oSipStack.newSession(s_type, oConfigCall);
+		oSipSessionCall[callId] = oSipStack.newSession(s_type, oConfigCall);
+		oSipSessionCall[callId].callId = callId;
 		// make call
-		if (oSipSessionCall.call(callee) != 0) {
-			oSipSessionCall = null;
-			txtTishi.innerHTML = '创建呼叫失败';
-			btnCall.style.display="";
-			btnHangUp.style.display="none";
+		if (oSipSessionCall[callId].call(callee) != 0) {
+			oSipSessionCall[callId] = null;
+			txtTishi.innerHTML = '创建呼叫失败,callId=' + callId;
+			// btnCall.style.display="";
+			// btnHangUp.style.display="none";
 
 		}
 	} else {
@@ -295,10 +306,11 @@ var startCall = function(callee, s_type) {
 	}
 };
 // 结束一个呼叫
-var hangup = function() {
-	if (oSipSessionCall) {
+var hangup = function(callId) {
+	// debugger;
+	if (oSipSessionCall[callId]) {
 
-		oSipSessionCall.hangup({
+		oSipSessionCall[callId].hangup({
 			events_listener : {
 				events : '*',
 				listener : onSipEventSession
@@ -315,12 +327,12 @@ function startRingTone() {
 	}
 }
 // 结束被叫振铃
-function 放() {
-	try {
-		ringtone.pause();
-	} catch (e) {
-	}
-}
+// function 放() {
+// try {
+// ringtone.pause();
+// } catch (e) {
+// }
+// }
 
 // 主叫播出后，被叫回复180ring，本机开始播放回铃音
 function startRingbackTone() {
@@ -337,20 +349,22 @@ function stopRingbackTone() {
 	} catch (e) {
 	}
 }
-//振铃音结束
+// 振铃音结束
 function stopRingTone() {
-    try { ringtone.pause(); }
-    catch (e) { }
+	try {
+		ringtone.pause();
+	} catch (e) {
+	}
 }
 
 /** ******界面控制函数结束*********** */
 /** ******界面事件开始*********** */
 // 注册成功事件
 var onRegister = function(evtType, desc) {
-//	debugger;
-	btnRegister.style.display="none";
-	document.getElementById("btnCall").style.display="block";
-	btnCall.disabled = false;
+	// debugger;
+	// btnRegister.style.display="none";
+	// document.getElementById("btnCall").style.display="block";
+	// btnCall.disabled = false;
 
 	if (evtType == "connecting")
 		txtTishi.innerHTML = "正在连接中(" + desc + ")";
@@ -360,21 +374,24 @@ var onRegister = function(evtType, desc) {
 		txtTishi.innerHTML = evtType + ":" + desc;
 };
 // 挂机事件
-var onTerminating = function(evtType, desc) {
-	btnCall.style.display="";
-	btnHangUp.style.display="none";
+var onTerminating = function(evtType, desc, callId) {
+	// btnCall.style.display="";
+	// btnHangUp.style.display="none";
 	// case 'terminating':
 	// case 'terminated': {
 	if (evtType == "terminating")
-		txtTishi.innerHTML = '中断呼叫中...';
+		txtTishi.innerHTML = '中断呼叫中,callid=' + callId;
 	else
-		txtTishi.innerHTML = '呼叫已经中断';
+		txtTishi.innerHTML = '呼叫已经中断,callid=' + callId;
+	document.getElementById("btnHangup_" + callId).style.display = "none";
+	document.getElementById("btnCall_" + callId).style.display = "";
+	document.getElementById("video_remote_" + callId).className = "conducterVideo";
 };
 
 // 注册失败事件
 var onUnregister = function(evtType, desc) {
-	btnRegister.style.display="";
-	btnCall.style.display="none";
+	// btnRegister.style.display="";
+	// btnCall.style.display="none";
 	if (evtType == "terminated")
 		txtTishi.innerHTML = "注册失败(" + desc + ")";
 	else if (evtType == "stopped")
@@ -424,7 +441,8 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 	case 'failed_to_stop': {
 
 		oSipSessionRegister = null;
-		oSipSessionCall = null;
+		// 应该设置对应呼叫的session
+		// oSipSessionCall = null;
 		onUnregister(e.type, e.description);
 
 		// 停止回铃音和振铃音
@@ -432,25 +450,22 @@ var onSipEventStack = function(e /* SIPml.Stack.Event */) {
 		stopRingTone();
 		break;
 	}
-	case 'i_new_call': {
-		if (oSipSessionCall) {
-			e.newSession.hangup();
-		} else {
-			oSipSessionCall = e.newSession;
-			// start listening for events
-			oSipSessionCall.setConfiguration(oConfigCall);
-
-			btnReject.style.display="";
-			btnAnswer.style.display="";
-			btnCall.style.display="none";
-			btnHangUp.style.display="none";
-
-			startRingTone();
-
-			var sRemoteNumber = (oSipSessionCall.getRemoteFriendlyName() || 'unknown');
-			txtTishi.innerHTML = "来电提醒，号码：" + sRemoteNumber + "";
-			// showNotifICall(sRemoteNumber);
-		}
+	case 'i_new_call': {// 接收到呼叫消息
+		var sRemoteNumber = (e.newSession.getRemoteFriendlyName() || 'unknown');
+		txtTishi.innerHTML = "号码：" + sRemoteNumber + "来电,已经被拒绝。";
+		// 直接挂断，本多视频窗口不能接收呼叫
+		e.newSession.hangup();
+		// debugger;
+		/*
+		 * if (oSipSessionCall) {// 不能作为被叫 e.newSession.hangup(); } else { var
+		 * callId = e.newSession.callId; oSipSessionCall[callId] = e.newSession; //
+		 * start listening for events
+		 * oSipSessionCall[callId].setConfiguration(oConfigCall); //
+		 * btnReject.style.display=""; // btnAnswer.style.display=""; //
+		 * btnCall.style.display="none"; // btnHangUp.style.display="none";
+		 * 
+		 * startRingTone(); // showNotifICall(sRemoteNumber); }
+		 */
 		break;
 	}
 	case 'm_permission_requested': {
@@ -475,41 +490,44 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 		if (e.session == oSipSessionRegister) {
 			// 注册阶段
 			onRegister(e.type, e.description);
-		} else if (e.session == oSipSessionCall) {
+		} else // if (e.session == oSipSessionCall) {
+		{
+			// debugger;
+			// btnCall.style.display="none";
+			// btnHangUp.style.display="";
+			// btnAnswer.style.display = "none";
+			// btnReject.style.display = "none";
+			// 呼叫阶段
+			// debugger;
+			if (e.type == 'connected')// invite 200 OK
 			{
-				//debugger;
-				btnCall.style.display="none";
-				btnHangUp.style.display="";
-				btnAnswer.style.display = "none";
-				btnReject.style.display = "none";
-				// 呼叫阶段
-				// debugger;
-				if (e.type == 'connected')// invite 200 OK
-				{
-					stopRingbackTone();
-					stopRingTone();
-					txtTishi.innerHTML = "对方已经摘机";
-				} else {
-					txtTishi.innerHTML = "呼叫中......";
-				}
+				stopRingbackTone();
+				stopRingTone();
+				txtTishi.innerHTML = "对方已经摘机";
+			} else {
+				txtTishi.innerHTML = "呼叫中......";
 			}
+
 		}
 		break;
 	}
 	case 'terminating':
 	case 'terminated': {
-		if (e.session == oSipSessionRegister && oSipSessionCall == null ) {
+		if (e.session == oSipSessionRegister && oSipSessionCall == null) {
 			onUnregister(e.type, e.description);
 			oSipSessionCall = null;
 			oSipSessionRegister = null;
-		} else if (e.session == oSipSessionCall) {
+		} else {// if (e.session == oSipSessionCall) {
 			// debugger;
-			oSipSessionCall = null;
-			onTerminating(e.type, e.description);
+
+			var callId = e.session.callId;
+			txtTishi.innerHTML = "对方拒绝此次呼叫.callId=" + callId;
+			oSipSessionCall[callId] = null;
+			onTerminating(e.type, e.description, callId);
 			stopRingbackTone();
 			stopRingTone();
-			btnAnswer.style.display="none";
-			btnReject.style.display="none";
+			// btnAnswer.style.display="none";
+			// btnReject.style.display="none";
 		}
 		break;
 	}
@@ -536,20 +554,24 @@ var onSipEventSession = function(e /* SIPml.Session.Event */) {
 		break;
 	}
 	case 'i_ao_request': {
-		if (e.session == oSipSessionCall) {
+		var callId = e.session.callId;
+		if (e.session == oSipSessionCall[callId]) {
 			var iSipResponseCode = e.getSipResponseCode();
 			if (iSipResponseCode == 180 || iSipResponseCode == 183) {
 				startRingbackTone();
-				txtTishi.innerHTML = '等待对方接听，远端振铃中，(' + iSipResponseCode + ")";
+				txtTishi.innerHTML = '等待对方接听，远端振铃中，(' + iSipResponseCode
+						+ "),callId=" + callId;
 			}
 		}
 		break;
 	}
 	case 'm_early_media': {
-		if (e.session == oSipSessionCall) {
+		// debugger;
+		var callId = e.session.callId;
+		if (e.session == oSipSessionCall[callId]) {
 			stopRingbackTone();
 			stopRingTone();
-			txtTishi.innerHTML = '媒体启动。'+ e.description;
+			txtTishi.innerHTML = '媒体启动。' + e.description + ",callId=" + callId;
 		}
 		break;
 	}

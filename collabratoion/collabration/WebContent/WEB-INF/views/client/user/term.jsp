@@ -21,6 +21,7 @@
 }
 
 .operater {
+	z-index: 999;
 	position: absolute;
 	margin-left: 5px;
 	margin-top: 5px;
@@ -35,6 +36,7 @@
 
 <div class="row-fluid show-grid">
 	<div class="span4">
+		
 		<div class="btn-group operater" id="op">
 			<button id="btnAnswer" type="button" class="btn btn-info"
 				onclick="javascript:Answer();" style="display: none">接听</button>
@@ -42,6 +44,7 @@
 				onclick="javascript:hangup();" style="display: none">拒绝</button>
 			<button id="btnCall" type="button" class="btn btn-info"
 				onclick="javascript:startCallWin();" style="display: none">呼叫</button>
+
 			<button id="btnHangUp" type="button" class="btn btn-danger"
 				onclick="javascript:hangup();" style="display: none">挂断</button>
 			<button id="btnRegister" type="button" class="btn btn-info"
@@ -140,8 +143,11 @@
 		//alert("from:" + from.tagName + ";to:" + to.tagName);
 
 		if (from.tagName == "DIV"
-				|| (from.tagName == "VIDEO" && to.tagName == "VIDEO"))
-			document.getElementById("op").style.display = "none";
+				|| (from.tagName == "VIDEO" && to.tagName == "VIDEO")) {
+			var oo = document.getElementById("op");
+			if (oo.style.display != "none")
+				oo.style.display = "none";
+		}
 	}
 	function mouseover(event, obj) {
 		//发生闪烁现象
@@ -149,7 +155,9 @@
 		//		: event.fromElement;
 		//var to = event.target ? event.target : event.toElement;
 		//if(obj.tagName=="VIDEO")
-		document.getElementById("op").style.display = "";
+		var oo = document.getElementById("op");
+		if (oo.style.display == "none")
+			oo.style.display = "block";
 	}
 
 	// 弹出呼叫窗口
@@ -162,7 +170,7 @@
 						url,
 						function(data, status) {
 							if (status == 'success') {
-								debugger;
+								//debugger;
 								var terms = eval(data);
 								var listStr = "";
 								//
@@ -201,7 +209,7 @@
 									listStr += '<img src="'+img+'"	style="width: 40px; height: 40px;">';
 									listStr += '</div>';
 									listStr += '<div class="mini-layout-body">';
-									listStr += termId + '<br />状态：'+stateStr;
+									listStr += termId + '<br />状态：' + stateStr;
 									listStr += '</div></div></div>';
 								}//end for
 								termList.innerHTML = listStr;

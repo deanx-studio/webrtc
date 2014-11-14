@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mdnet.asterisk.ami.event.Bridge;
 import com.mdnet.asterisk.ami.event.EventMsg;
 import com.mdnet.asterisk.ami.event.Hangup;
+import com.mdnet.asterisk.ami.event.HangupRequest;
 import com.mdnet.asterisk.ami.event.NewChannel;
 import com.mdnet.asterisk.ami.event.NewExten;
 import com.mdnet.asterisk.ami.event.NewState;
@@ -64,27 +65,33 @@ public class CallServiceImpl implements ICallService {
 
 		List<TerminateInfo> terms = termDAO.find(where, pageNo);
 		if (terms != null && terms.size() > 0) {
+
 			TerminateInfo ti = terms.get(0);
-			ti.setAddress(msg.getAddress());
-			ti.setCause(msg.getCause());
-			ti.setChannelType(msg.getChannelType());
-			ti.setPeerStatus(msg.getPeerStatus());
-
-			ti.setChannelType("");
-			ti.setChannel("");
-			ti.setChannelStateDesc(msg.getPeerStatus());
 			if (ti.getChannelState() < 0) {
-				if (msg.getPeerStatus().contains("Registered")) {
-					ti.setChannelState(-1);// 空闲
-					ti.setLastRegisterTime(this.convertDate(msg.getTime()));
-				} else {
-					ti.setChannelState(-2);// 不可用
-					ti.setChannelStateDesc("");
-					ti.setUnRegisterTime(this.convertDate(msg.getTime()));
-				}
+				ti.setAddress(msg.getAddress());
+				ti.setCause(msg.getCause());
+				ti.setChannelType(msg.getChannelType());
+				ti.setPeerStatus(msg.getPeerStatus());
 
-				// 更新数据
-				termDAO.update(ti);
+				ti.setChannelType("");
+				ti.setChannel("");
+				ti.setChannelStateDesc(msg.getPeerStatus());
+				if (ti.getChannelState() < 0) {
+					if (msg.getPeerStatus().contains("Registered")) {
+						ti.setChannelState(-1);// 空闲
+						ti.setLastRegisterTime(this.convertDate(msg.getTime()));
+					} else {
+						ti.setChannelState(-2);// 不可用
+						ti.setChannelStateDesc("");
+						ti.setUnRegisterTime(this.convertDate(msg.getTime()));
+					}
+
+					// 更新数据
+					termDAO.update(ti);
+				}
+			} else {
+
+				logger.info("当前状态为通话中，不在更新状态。");
 			}
 		} else {
 			TerminateInfo ti = new TerminateInfo();
@@ -249,20 +256,49 @@ public class CallServiceImpl implements ICallService {
 
 	@Override
 	public List<TerminateInfo> listTerm(String status, String peer,
-			String name, int pageNo, int pageCount) {
+			String peers, String name, int pageNo, int pageCount) {
 		// 更具名字获取终端号
-		if (name != null) {
+		if (name != null && name.length() > 0) {
 			List<UserInfo> ui = this.userDAO.findByHQL(" where username='"
 					+ name + "'", 0);
 			if (ui != null && ui.size() > 0)
 				peer = ui.get(0).getTerminateNumber();
 		}
 		String query = "";
-		if (peer != null)
+		if (peer != null && peer.length() > 0)
 			query = " where Peer = 'SIP/" + peer + "'";
-		if (status != null)
+		if (peers != null && peers.length() > 0) {
+			query = " where ";
+			String[] p = peers.split(",");
+			for (int i = 0; i < p.length; i++) {
+				if (p[i].length() <= 0)
+					continue;
+				if (i != 0)
+					query += " or ";
+				query += "Peer = '" + p[i] + "'";
+
+			}
+		}
+		if (status != null && status.length() > 0)
 			query = " where ChannelState " + status + "";
+		// System.out.println(query);
 		List<TerminateInfo> tis = this.termDAO.find(query, pageNo);
+		Date now = new Date();
+		// 一小时视为超时
+		// 视为未注册的条件是1、上次注册时间距现在时间大于1小时；2：上次通话时间距现在时间大于1小时，而且状态为-1（注册状态）
+
+		for (TerminateInfo ti : tis) {
+			if (ti.getChannelState() == -1
+					&& (now.getTime() - ti.getLastRegisterTime().getTime() > 60 * 60 * 1000)
+					&& (now.getTime()
+							- (ti.getLastCallStartTime() == null ? now
+									.getTime() : ti.getLastCallStartTime()
+									.getTime()) > 60 * 60 * 1000)) {
+				ti.setChannelState(-2);// 设置为未注册
+				this.termDAO.update(ti);
+			}
+		}
+
 		return tis;
 	}
 
@@ -280,7 +316,8 @@ public class CallServiceImpl implements ICallService {
 		TerminateInfo term2 = null;
 		if (terms2 != null && terms2.size() > 0)
 			term2 = terms2.get(0);
-		if (msg.getBridgestate().contains("Unlink")) {
+		if (msg.getBridgestate().contains("Unlink")
+				&& (term1 == null || term1.getChannelState() < 0 )) {
 			if (term1 != null) {
 				term1.setChannelState(-1);
 				this.termDAO.update(term1);
@@ -289,6 +326,25 @@ public class CallServiceImpl implements ICallService {
 				term2.setChannelState(-1);
 				this.termDAO.update(term2);
 			}
+		}
+	}
+
+	@Override
+	public void updateTerm(TerminateInfo ti) {
+		this.termDAO.update(ti);
+	}
+
+	@Override
+	public void hangupRequest(HangupRequest msg) {
+		String where = " where Channel = '" + msg.getChannel() + "'";
+		int pageNo = 0;
+		List<TerminateInfo> terms = termDAO.find(where, pageNo);
+		if (terms != null && terms.size() > 0) {
+			TerminateInfo ti = terms.get(0);
+			ti.setChannelState(-1);// 空闲
+			ti.setChannelStateDesc("hangupRequest");
+			ti.setLastCallEndTime(this.convertDate(msg.getTime()));
+			this.termDAO.update(ti);
 		}
 	}
 

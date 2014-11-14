@@ -8,6 +8,7 @@ import net.zhinet.travel.pojo.basepojo.TerminateInfo;
 import com.mdnet.asterisk.ami.event.Bridge;
 import com.mdnet.asterisk.ami.event.EventMsg;
 import com.mdnet.asterisk.ami.event.Hangup;
+import com.mdnet.asterisk.ami.event.HangupRequest;
 import com.mdnet.asterisk.ami.event.NewChannel;
 import com.mdnet.asterisk.ami.event.PeerStatusMsg;
 
@@ -30,9 +31,13 @@ public interface ICallService {
 
 	void save(TerminateInfo ti);
 
-	List<TerminateInfo> listTerm(String status, String peer, String name,
-			int pageNo, int pageCount);
+	List<TerminateInfo> listTerm(String status, String peer, String peers,
+			String name, int pageNo, int pageCount);
 
 	void bridge(Bridge msg);
-	 
+
+	void updateTerm(TerminateInfo ti);
+
+	void hangupRequest(HangupRequest msg);
+
 }

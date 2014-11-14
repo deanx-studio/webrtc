@@ -1,5 +1,6 @@
 package com.mdnet.travel.core.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,6 +46,7 @@ public class TermController extends BaseController {
 	public String searchTerm(
 			@RequestParam(value = "status", required = false) String status,
 			@RequestParam(value = "peer", required = false) String peer,
+			@RequestParam(value = "peers", required = false) String peers,
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "page", required = false) String page,
 			@RequestParam(value = "count", required = false) String count) {
@@ -55,16 +57,23 @@ public class TermController extends BaseController {
 		if (count != null)
 			pageCount = Integer.parseInt(count);
 		List<TerminateInfo> terms = this.callService.listTerm(status, peer,
-				name, pageNo, pageCount);
+				peers, name, pageNo, pageCount);
+		Date now = new Date();
 		for (TerminateInfo ti : terms) {
 			ti.setDevicePassword("");
+			//超时设置为未注册.10分钟为超时
+			//checkRegisterTimeout(now, ti);
 		}
+		
+		
 		if (terms != null && terms.size() > 0) {
 			Gson g = new Gson();
 			return g.toJson(terms);
 		} else
 			return "";
 	}
+
+	
 
 	@RequestMapping("/list")
 	public ModelAndView termList(

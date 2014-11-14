@@ -12,7 +12,7 @@
 		role="form" class="form-signin">
 		<div class="page-header">
 			<h2>
-				登录 <small>欢迎使用泰乐德系统!</small>
+				登录 <small>泰乐德${projectName}!</small>
 			</h2>
 		</div>
 		<div class="control-group">

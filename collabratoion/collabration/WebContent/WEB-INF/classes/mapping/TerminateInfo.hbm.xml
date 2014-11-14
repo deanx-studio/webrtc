@@ -68,7 +68,7 @@
 			</column>
 		</property>
 		<property name="AppData" type="string">
-			<column name="app_data" length="16" not-null="false">
+			<column name="app_data" length="255" not-null="false">
 				<comment>extension函数对应的参数</comment>
 			</column>
 		</property>
