@@ -16,10 +16,19 @@
 .remoteVideo {
 	border: 1px solid black;
 	background-image:
-		url("${context}/resources/image/remote_video_mini.png");
+		url("${context}/resources/image/remote_video_mini2.png");
 	background-repeat: no-repeat;
-	width: 496px;
-	height: 396px;
+	width: 202px;
+	height: 152px;
+}
+
+.localVideo {
+	border: 1px solid black;
+	background-image:
+		url("${context}/resources/image/local_video_mini2.png");
+	background-repeat: no-repeat;
+	width: 202px;
+	height: 152px;
 }
 
 .operater {
@@ -160,7 +169,7 @@
 	</div>
 	<div class="modal-body form-horizontal">
 		<div class="row-fluid text-center">
-			<div class="span5">
+			<div class="span5 offset1">
 				<video id="video_local" class="localVideo"
 					style="width: 200px; height: 150px"></video>
 			</div>
@@ -258,6 +267,10 @@
 			alert("对不起，该终端未注册，不能进行任何操作！");
 			return;
 		}
+		if(parseInt(state)==4){
+			alert("对不起，该终端是主叫振铃，不能进行任何操作！");
+			return;
+		}
 		var termList = document.getElementsByName("termChk");
 		
 		//清除其他的选项，
@@ -325,8 +338,11 @@
 					else if(parseInt(state)==-1){
 						idle++;
 					}
-					else if(parseInt(state)==4 || parseInt(state)==5 ){
+					else if(/*parseInt(state)==4 ||*/ parseInt(state)==5 ){
 					ring++;
+					}
+					else if( parseInt(state)==4 ){
+						
 					}
 					else{
 					busy++;
@@ -340,7 +356,7 @@
 					btnAbort.disabled = false;//z终止呼叫
 					btnMonitor.disabled=false;//监听
 					btnInsert.disabled=false;//强插
-					//btnDismantle.disabled=false;//强拆
+					btnDismantle.disabled=false;//强拆
 					btnSecrect.disabled=false;//密语
 					
 				}
@@ -462,7 +478,7 @@
 	}
 	function dismantle(){
 		funName = "强拆";
-		audioCall(""+calledNumber.value);
+		audioCall("22"+calledNumber.value);
 	}
 	function secrect(){
 		funName = "密语";
@@ -470,7 +486,7 @@
 	}
 	function instead(){
 		funName = "代接";
-		audioCall("*8");//+calledNumber.value);
+		audioCall("*8"+calledNumber.value);
 	}
 	function makeVideoCall(){
 		funName = "视频呼叫";

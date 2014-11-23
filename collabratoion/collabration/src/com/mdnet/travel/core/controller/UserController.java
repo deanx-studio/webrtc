@@ -2,9 +2,11 @@ package com.mdnet.travel.core.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.zhinet.travel.pojo.basepojo.CallHistory;
 import net.zhinet.travel.pojo.basepojo.TerminateInfo;
 import net.zhinet.travel.pojo.basepojo.UserInfo;
 
@@ -139,10 +141,15 @@ public class UserController extends BaseController {
 
 		if (id != null) {
 
-			this.mav.addObject(
-					"callList",
-					this.callService.findHistory("where localPeer='SIP/" + id
-							+ "'", 0, 4));
+			List<CallHistory> calls = this.callService.findHistory(
+					"where localPeer='SIP/" + id + "' or remotePeer ='" + id
+							+ "' group by localPeer", 0, 4);
+			for (CallHistory call : calls) {
+				call.setEndTime(call.getEndTime().substring(5));
+				if (call.getRemotePeer().compareTo( id) == 0)
+					call.setRemotePeer(call.getLocalPeer().substring(4));
+			}
+			this.mav.addObject("callList", calls);
 
 			// sip相关数据
 			TerminateInfo ti = this.callService.findTerm(id);

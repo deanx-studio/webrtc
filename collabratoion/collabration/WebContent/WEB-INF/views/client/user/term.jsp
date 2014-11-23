@@ -36,7 +36,7 @@
 
 <div class="row-fluid show-grid">
 	<div class="span4">
-		
+
 		<div class="btn-group operater" id="op">
 			<button id="btnAnswer" type="button" class="btn btn-info"
 				onclick="javascript:Answer();" style="display: none">接听</button>
@@ -95,12 +95,14 @@
 					<input type="text" id="calledNumber" placeholder="请输入呼叫号码">
 				</div>
 			</div>
+			<!-- 
 			<div class="control-group">
 				<label class="control-label">终端搜索</label>
 				<div class="controls">
 					<input type="text" id="searchNumber" placeholder="请输入呼叫号码">
 				</div>
 			</div>
+			 -->
 		</div>
 		<div class="modal-body">
 			<div class="row-fluid text-center" id="termList"></div>
@@ -135,6 +137,10 @@
 	//UA/UE侧控制
 </script>
 <script type="text/javascript">
+	function callAgain(peer) {
+		startCallWin();
+		calledNumber.value = peer;
+	}
 	function mouseout(event, obj) {
 		//发生闪烁现象
 		var from = event.relatedTarget ? event.relatedTarget

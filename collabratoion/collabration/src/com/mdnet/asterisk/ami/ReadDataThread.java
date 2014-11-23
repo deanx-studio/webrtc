@@ -79,9 +79,9 @@ public class ReadDataThread extends Thread {
 					if (text.indexOf("\r\n") > 0)
 						// 处理接收的报文
 						handle();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 					this.isConnect = false;
 				}
 
@@ -117,6 +117,7 @@ public class ReadDataThread extends Thread {
 				if (last > 0) {
 					String eventTxt = this.text.substring(0, last);
 					if (this.event != null)// 出发事件
+						this.isConnect = true;
 						this.event.fireEvent(eventTxt);
 					// 清理缓冲区
 					this.text = this.text.substring(last + 4);
@@ -139,7 +140,7 @@ public class ReadDataThread extends Thread {
 
 	}
 
-	private void sendLogin() {
+	public int sendLogin() {
 		LoginActionMsg msg = new LoginActionMsg();
 		msg.setUsername(ParamConfig.inst().getAmiUsername());
 		msg.setSecret(ParamConfig.inst().getAmiSecrect());
@@ -148,9 +149,11 @@ public class ReadDataThread extends Thread {
 
 			this.writer.write(msg.toString().getBytes());
 			System.out.println("--------------send data:-------------\r\n"+msg.toString());
-		} catch (IOException e) {
+			return 0;
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return -1;
 		}
 	}
 }

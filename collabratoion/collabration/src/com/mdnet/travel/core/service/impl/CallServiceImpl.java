@@ -209,6 +209,9 @@ public class CallServiceImpl implements ICallService {
 
 	@Override
 	public void hangup(Hangup msg) {
+		int inx = msg.getChannel().indexOf('<');
+		if (inx > 0)
+			msg.setChannel(msg.getChannel().substring(0, inx));
 		String where = " where Channel = '" + msg.getChannel() + "'";
 		int pageNo = 0;
 		List<TerminateInfo> terms = termDAO.find(where, pageNo);
@@ -286,9 +289,10 @@ public class CallServiceImpl implements ICallService {
 		Date now = new Date();
 		// 一小时视为超时
 		// 视为未注册的条件是1、上次注册时间距现在时间大于1小时；2：上次通话时间距现在时间大于1小时，而且状态为-1（注册状态）
-
+		// 上次振铃也状态，也增加有效期控制。
 		for (TerminateInfo ti : tis) {
-			if (ti.getChannelState() == -1
+			if ((ti.getChannelState() == -1 || ti.getChannelState() == 4 || ti
+					.getChannelState() == 5)
 					&& (now.getTime() - ti.getLastRegisterTime().getTime() > 60 * 60 * 1000)
 					&& (now.getTime()
 							- (ti.getLastCallStartTime() == null ? now
@@ -317,7 +321,7 @@ public class CallServiceImpl implements ICallService {
 		if (terms2 != null && terms2.size() > 0)
 			term2 = terms2.get(0);
 		if (msg.getBridgestate().contains("Unlink")
-				&& (term1 == null || term1.getChannelState() < 0 )) {
+				&& (term1 == null || term1.getChannelState() < 0)) {
 			if (term1 != null) {
 				term1.setChannelState(-1);
 				this.termDAO.update(term1);
