@@ -22,7 +22,9 @@ public class CallHistoryDAOImpl extends BasicDAOImpl<CallHistory> implements
 				+ "' ", 0, 20);
 		if (ch != null && ch.size() > 0) {
 			CallHistory callHis = ch.get(0);
-			callHis.setStatus(channelState);
+			if (channelState > 0) {
+				callHis.setStatus(channelState);
+			}
 			callHis.setEndTime(sdf.format(new Date()));
 			this.update(ch.get(0));
 		}
@@ -32,7 +34,7 @@ public class CallHistoryDAOImpl extends BasicDAOImpl<CallHistory> implements
 	public List<CallHistory> findByHQL(String where, int pageNo, int count) {
 		String query = "from CallHistory ";
 		query += where;
-  
+
 		final String queryString = query;
 		final int length = count;
 		final int offset = pageNo * length;

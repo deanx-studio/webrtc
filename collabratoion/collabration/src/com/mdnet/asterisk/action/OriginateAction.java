@@ -25,48 +25,72 @@ public class OriginateAction extends ActionMsg {
 	private int Timeout = 30000;
 	private String CallerID;// : "Asterisk" <6000>
 	private String Async = "true";
+	private String Variable = null;
+
+	public String getVariable() {
+		return Variable;
+	}
+
+	public void setVariable(String variable) {
+		Variable = variable;
+	}
+
 	public String getChannel() {
 		return Channel;
 	}
+
 	public void setChannel(String channel) {
 		Channel = channel;
 	}
+
 	public String getExten() {
 		return Exten;
 	}
+
 	public void setExten(String exten) {
 		Exten = exten;
 	}
+
 	public String getContext() {
 		return Context;
 	}
+
 	public void setContext(String context) {
 		Context = context;
 	}
+
 	public int getPriority() {
 		return Priority;
 	}
+
 	public void setPriority(int priority) {
 		Priority = priority;
 	}
+
 	public int getTimeout() {
 		return Timeout;
 	}
+
 	public void setTimeout(int timeout) {
 		Timeout = timeout;
 	}
+
 	public String getCallerID() {
 		return CallerID;
 	}
+
 	public void setCallerID(String callerID) {
 		CallerID = callerID;
 	}
+
 	public String getAsync() {
 		return Async;
 	}
+
 	public void setAsync(String async) {
 		Async = async;
 	}
+
 	public String toString() {
 
 		String msg = super.toString();
@@ -76,6 +100,9 @@ public class OriginateAction extends ActionMsg {
 		msg += "Priority: " + this.Priority + "\r\n";
 		msg += "Timeout: " + this.Timeout + "\r\n";
 		msg += "CallerID: " + this.CallerID + "\r\n";
+		if (this.Variable != null) {
+			msg += "Variable: " + this.Variable + "\r\n";
+		}
 		msg += "Async: " + this.Async + "\r\n\r\n";
 		return msg;
 	}

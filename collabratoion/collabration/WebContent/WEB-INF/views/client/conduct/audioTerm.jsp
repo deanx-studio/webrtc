@@ -129,13 +129,14 @@
 		</div>
 	</div>
 	<div class="row modal-footer">
-		<div class="text-left span4" style="line-height: 30px;width:100px;">
-			
-			<input type="checkbox" class="text-left" style="margin-top: -3px;display:none;"
-				id="selAll" /><!-- 全选 --> <a href="javascript:clear();"
-				class="btn btn-primary">清除</a>
+		<div class="text-left span4" style="line-height: 30px; width: 100px;">
+
+			<input type="checkbox" class="text-left"
+				style="margin-top: -3px; display: none;" id="selAll" />
+			<!-- 全选 -->
+			<a href="javascript:clear();" class="btn btn-primary">清除</a>
 		</div>
-		<div class="text-right span8 offset2" style="min-width:616px;">
+		<div class="text-right span9 offset1" style="min-width: 616px;">
 			<button id="btnRegister" onclick="javascript:register();"
 				class="btn btn-primary">注册</button>
 			<button id="btnMonitor" onclick="javascript:monitor();"
@@ -148,7 +149,8 @@
 				class="btn btn-primary" disabled>密语</button>
 			<button id="btnInstead" onclick="javascript:instead();"
 				class="btn btn-primary" disabled>代接</button>
-
+			<button id="btnGroupCall" onclick="javascript:groupAudioCall();"
+				class="btn btn-primary" disabled>组呼</button>
 			<button id="btnVideoCall" onclick="javascript:makeVideoCall();"
 				class="btn btn-primary" disabled>视频呼叫</button>
 			<button id="btnAudioCall" onclick="javascript:makeAudioCall();"
@@ -274,13 +276,13 @@
 		var termList = document.getElementsByName("termChk");
 		
 		//清除其他的选项，
-		for (var i = 0; i < termList.length; i++) {
+		/*for (var i = 0; i < termList.length; i++) {
 			if(termList[i].checked){
 				document.getElementById(termList[i].id).checked = false;
 				var spanObj0 = document.getElementById("span_" + termList[i].id);
 				spanObj0.style.background = "url(${context}/resources/image/CheckBox.gif) 0px -300px no-repeat";
 			}
-		}
+		}*/
 		//debugger;
 			//设置当前选中的终端
 		var chkObj = document.getElementById(chkId);
@@ -307,6 +309,7 @@
 		btnVideoCall.disabled=true;//视频呼叫
 		btnAudioCall.disabled=true;//音频呼叫
 		btnAbort.disabled=true;//终端
+		btnGroupCall.disabled = true;//组呼
 		//debugger;
 		//根据状态打开不同的按钮
 		var termList = document.getElementsByName("termChk");
@@ -349,6 +352,9 @@
 					}
 				}//end for
 				//debugger;
+				if(idle>0){
+					btnGroupCall.disabled = false;//组呼
+				}
 				if(ring>0){
 					btnInstead.disabled=false;//代接
 				}
@@ -467,7 +473,35 @@
 			}
 		}, 3 * 1000);
 	}
+	function groupAudioCall()
+	{
+		funName = "组呼";
+
+		var termList = document.getElementsByName("termChk");
+		var terms = "";
+		for (var i = 0; i < termList.length; i++) {
+			if(termList[i].checked){
+			terms += termList[i].id + ",";
+			}
+		}
+		//debugger;
+		if(terms.length==0) {
+			alert("请选择空闲的终端！");
+			return
+			};
+		var url = "${context}/term/groupCall";
+		$.post(url, {
+			peers : terms,
+		}, function(result, status) {
+			//debugger;
+			if (status == 'success') {
+				//OK
+				btnGroupCall.disabled = true;
+			}
+		}
+	);
 	
+	}
 	function monitor(){
 		funName = "监听";
 		audioCall("33"+calledNumber.value);

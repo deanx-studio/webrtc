@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.mdnet.asterisk.action.OriginateAction;
+import com.mdnet.asterisk.ami.AMIBase;
 import com.mdnet.travel.core.service.ICallService;
 
 @Controller
@@ -41,6 +43,30 @@ public class TermController extends BaseController {
 	/*
 	 * 列举所有终端
 	 */
+	@RequestMapping("/groupCall")
+	@ResponseBody
+	public String groupCall(
+			@RequestParam(value = "peers", required = false) String peers) {
+		List<TerminateInfo> terms = this.callService.listTerm(null, null,
+				peers, null, 0, 20);
+		String groupId = "00";
+		for(TerminateInfo t:terms)
+		{
+			//逐个发送组呼AMI消息
+			OriginateAction msg = new OriginateAction();
+			msg.setCallerID("70"+groupId);
+			msg.setChannel(t.getPeer());
+			msg.setContext("from-sip");
+			msg.setExten("70"+groupId);
+			msg.setVariable("confNo="+"70"+groupId);
+			AMIBase.instance().sendAction(msg);
+		}
+		return "success";
+	}
+
+	/*
+	 * 列举所有终端
+	 */
 	@RequestMapping("/search")
 	@ResponseBody
 	public String searchTerm(
@@ -61,19 +87,16 @@ public class TermController extends BaseController {
 		Date now = new Date();
 		for (TerminateInfo ti : terms) {
 			ti.setDevicePassword("");
-			//超时设置为未注册.10分钟为超时
-			//checkRegisterTimeout(now, ti);
+			// 超时设置为未注册.10分钟为超时
+			// checkRegisterTimeout(now, ti);
 		}
-		
-		
+
 		if (terms != null && terms.size() > 0) {
 			Gson g = new Gson();
 			return g.toJson(terms);
 		} else
 			return "";
 	}
-
-	
 
 	@RequestMapping("/list")
 	public ModelAndView termList(

@@ -58,16 +58,21 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>呼叫号码</th>
-						<!-- 	<th>呼叫类型</th>  -->
-						<th>呼叫时间</th>
+						<th>号码</th>
+						<th>类型</th>
+						<th>时长</th>
+						<th>时间</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="call" items="${callList}" varStatus="status">
 						<tr>
 							<td><a href="javascript:callAgain(${call.remotePeer})">${call.remotePeer}</a></td>
-
+							<td>
+							<c:choose><c:when test="${call.callType == 0 }">呼出</c:when><c:otherwise>呼入</c:otherwise></c:choose>
+							
+							</td>
+							<td>${call.callLength}</td>
 							<td>${call.endTime}</td>
 						</tr>
 					</c:forEach>

@@ -1,6 +1,7 @@
 package com.mdnet.travel.core.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -143,11 +144,38 @@ public class UserController extends BaseController {
 
 			List<CallHistory> calls = this.callService.findHistory(
 					"where localPeer='SIP/" + id + "' or remotePeer ='" + id
-							+ "' group by localPeer", 0, 4);
+							+ "' order by makeTime desc", 0, 5);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for (CallHistory call : calls) {
+				// 计算呼叫时长
+				if (call.getStatus() == 6) {
+
+					try {
+						long length;
+						length = sdf.parse(call.getEndTime()).getTime() / 1000
+								- sdf.parse(call.getMakeTime()).getTime()
+								/ 1000;
+						// if(length>=60)
+						call.setCallLength(String.valueOf(length));
+						// else
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				} else {
+					call.setCallLength("0");
+				}
+				
 				call.setEndTime(call.getEndTime().substring(5));
-				if (call.getRemotePeer().compareTo( id) == 0)
+				if (call.getRemotePeer().compareTo(id) == 0){
+					call.setCallType(1);//被叫
 					call.setRemotePeer(call.getLocalPeer().substring(4));
+				}
+				else
+				{
+					call.setCallType(0);//主叫
+				}
 			}
 			this.mav.addObject("callList", calls);
 

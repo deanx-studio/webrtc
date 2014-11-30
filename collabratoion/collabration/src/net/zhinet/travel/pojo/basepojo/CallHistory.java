@@ -8,7 +8,26 @@ public class CallHistory {
 	private String endTime;// 结束时间
 	private String channel;
 	private int id;
+	private String callLength;//呼叫时长
+	private int callType;//0:主叫；1：被叫
 	
+	
+	public String getCallLength() {
+		return callLength;
+	}
+
+	public void setCallLength(String callLength) {
+		this.callLength = callLength;
+	}
+
+	public int getCallType() {
+		return callType;
+	}
+
+	public void setCallType(int callType) {
+		this.callType = callType;
+	}
+
 	public int getId() {
 		return id;
 	}

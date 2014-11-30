@@ -230,6 +230,8 @@ public class CallServiceImpl implements ICallService {
 			ti.setLastCallEndTime(this.convertDate(msg.getTime()));
 			this.termDAO.update(ti);
 		}
+		// 更新呼叫历史记录
+		this.callHistory.updateHistory(msg.getChannel(), -1);
 	}
 
 	@Override
@@ -350,6 +352,8 @@ public class CallServiceImpl implements ICallService {
 			ti.setLastCallEndTime(this.convertDate(msg.getTime()));
 			this.termDAO.update(ti);
 		}
+		// 更新呼叫历史记录
+		this.callHistory.updateHistory(msg.getChannel(), -1);
 	}
 
 }
