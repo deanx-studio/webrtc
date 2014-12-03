@@ -7,12 +7,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.zhinet.travel.pojo.basepojo.ParamConfig;
 import net.zhinet.travel.pojo.basepojo.UserInfo;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mdnet.travel.core.dao.IParamConfigDAO;
 import com.mdnet.travel.core.dao.IUserInfoDAO;
 import com.mdnet.travel.core.service.IAdminService;
 import com.mdnet.travel.core.utils.EncryptSpring;
@@ -24,6 +26,9 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Resource(name = IUserInfoDAO.DAO_NAME)
 	protected IUserInfoDAO userDAO;
+	
+	@Resource(name = IParamConfigDAO.DAO_NAME)
+	protected IParamConfigDAO paramsDAO;
 
 	protected SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -96,6 +101,26 @@ public class AdminServiceImpl implements IAdminService {
 		if (uis != null && uis.size() > 0)
 			return uis.get(0);
 		return null;
+	}
+
+	@Override
+	public List<ParamConfig> getParams() {
+		return paramsDAO.findAll();
+	}
+
+	@Override
+	public void setParam(String paramKey, String keyValue, String keyDesc) {
+		this.paramsDAO.setParam(paramKey, keyValue, keyDesc);
+	}
+
+	@Override
+	public void setParam(String paramKey, int keyValue, String keyDesc) {
+		this.paramsDAO.setParam(paramKey, String.valueOf(keyValue), keyDesc);
+	}
+
+	@Override
+	public String getParam(String paramKey) {
+		return this.paramsDAO.getValue(paramKey);
 	}
 
 }

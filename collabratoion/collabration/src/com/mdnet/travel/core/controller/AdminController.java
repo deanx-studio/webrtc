@@ -1,9 +1,12 @@
 package com.mdnet.travel.core.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.zhinet.travel.pojo.basepojo.ParamConfig;
 import net.zhinet.travel.pojo.basepojo.UserInfo;
 
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,40 @@ public class AdminController extends BaseController {
 			@RequestParam(value = "uid", required = true) int id) {
 		int ret = this.adminService.deleteUser(id);
 		return String.valueOf(ret);
+	}
+
+	@RequestMapping("param/websocket")
+	public ModelAndView paramWebSocket() {
+		this.createMav(null);
+		this.mav.setViewName("admin/param/websocket");
+		List<ParamConfig> params = adminService.getParams();
+		this.mav.addObject("params", params);
+		return this.mav;
+	}
+
+	@RequestMapping("param/ami")
+	public ModelAndView paramAmi(
+			@RequestParam(value = "amiServer", required = false) String amiServer,
+			@RequestParam(value = "amiPort", required = false) String amiPort,
+			@RequestParam(value = "amiUsername", required = false) String amiUsername,
+			@RequestParam(value = "amiSecrect", required = false) String amiSecrect) {
+		this.createMav(null);
+		// 保存数据
+		if (amiServer != null && amiUsername != null && amiSecrect != null) {
+			this.adminService.setParam("amiServer", amiServer, "AMI服务器地址或者域名");
+			this.adminService.setParam("amiPort", amiPort, "AMI服务的访问端口号");
+			this.adminService.setParam("amiUsername", amiUsername,
+					"AMI服务的访问用户名");
+			this.adminService.setParam("amiSecrect", amiSecrect, "AMI服务的访问密码");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			this.mav.addObject("message", sdf.format(new Date()) + "保存成功!");
+		}
+		// 显示数据
+		
+		this.mav.setViewName("admin/param/ami");
+		List<ParamConfig> params = adminService.getParams();
+		this.mav.addObject("params", params);
+		return this.mav;
 	}
 
 	@RequestMapping("/user/edit")

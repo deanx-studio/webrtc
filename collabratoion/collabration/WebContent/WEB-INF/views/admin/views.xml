@@ -14,4 +14,11 @@
 	<definition name="admin/term/list" extends="admin_template">
 		<put-attribute name="content" value="/WEB-INF/views/admin/term/list.jsp" />
 	</definition>
+	
+	<definition name="admin/param/websocket" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/param_websocket.jsp" />
+	</definition>
+	<definition name="admin/param/ami" extends="admin_template">
+		<put-attribute name="content" value="/WEB-INF/views/admin/param_ami.jsp" />
+	</definition>
 </tiles-definitions>

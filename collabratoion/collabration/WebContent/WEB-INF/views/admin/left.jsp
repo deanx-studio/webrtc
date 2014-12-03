@@ -20,13 +20,15 @@
 			<li class="nav-header">用户</li>
 			<li><a href="${context }/user/term?id=${termId}">用户终端</a></li>
 			<li class="nav-header">系统设置</li>
-			<li><a href="${context }/user/2calls">呼叫测试</a></li>
+			<li><a href="${context }/admin/param/websocket">WEB Socket参数配置</a></li>
+			<li><a href="${context }/admin/param/ami">AMI参数配置</a></li>
+			<!-- 
 			<li><a href="#">Link</a></li>
 			<li><a href="#">Link</a></li>
 			<li><a href="#">Link</a></li>
 			<li><a href="#">Link</a></li>
 			<li><a href="#">Link</a></li>
-
+			 -->
 		</ul>
 	</div>
 </div>
