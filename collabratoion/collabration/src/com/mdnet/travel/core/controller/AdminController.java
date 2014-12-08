@@ -41,14 +41,6 @@ public class AdminController extends BaseController {
 		return String.valueOf(ret);
 	}
 
-	@RequestMapping("param/websocket")
-	public ModelAndView paramWebSocket() {
-		this.createMav(null);
-		this.mav.setViewName("admin/param/websocket");
-		List<ParamConfig> params = adminService.getParams();
-		this.mav.addObject("params", params);
-		return this.mav;
-	}
 
 	@RequestMapping("param/ami")
 	public ModelAndView paramAmi(
@@ -64,12 +56,45 @@ public class AdminController extends BaseController {
 			this.adminService.setParam("amiUsername", amiUsername,
 					"AMI服务的访问用户名");
 			this.adminService.setParam("amiSecrect", amiSecrect, "AMI服务的访问密码");
+			//更新所有数据
+			this.adminService.reloadParam();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			this.mav.addObject("message", sdf.format(new Date()) + "保存成功!");
 		}
 		// 显示数据
-		
+
 		this.mav.setViewName("admin/param/ami");
+		List<ParamConfig> params = adminService.getParams();
+		this.mav.addObject("params", params);
+		return this.mav;
+	}
+
+	@RequestMapping("param/websocket")
+	public ModelAndView paramWebsocket(
+			@RequestParam(value = "domain", required = false) String domain,
+			@RequestParam(value = "websocket_proxy_url", required = false) String websocket_proxy_url,
+			@RequestParam(value = "outbound_proxy_url", required = false) String outbound_proxy_url,
+			@RequestParam(value = "ICE", required = false) String ICE,
+			@RequestParam(value = "realm", required = false) String realm) {
+		this.createMav(null);
+		// 保存数据
+		if (domain != null && websocket_proxy_url != null
+				&& outbound_proxy_url != null && ICE != null && realm != null) {
+			this.adminService.setParam("domain", domain, "SIP域(domain)");
+			this.adminService.setParam("websocket_proxy_url",
+					websocket_proxy_url, " web socket服务器地址和端口号");
+			this.adminService.setParam("outbound_proxy_url",
+					outbound_proxy_url, " sip服务器地址和端口");
+			this.adminService.setParam("ICE", ICE, "穿越防火墙的ICE、STUN或者TURN服务器");
+			this.adminService.setParam("realm", realm, "realm：sip领域名称");
+			//更新所有数据
+			this.adminService.reloadParam();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			this.mav.addObject("message", sdf.format(new Date()) + "保存成功!");
+		}
+		// 显示数据
+
+		this.mav.setViewName("admin/param/websocket");
 		List<ParamConfig> params = adminService.getParams();
 		this.mav.addObject("params", params);
 		return this.mav;

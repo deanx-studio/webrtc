@@ -1,9 +1,7 @@
 package com.mdnet.travel.core.service.impl;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class ParamConfig {
-	protected static ParamConfig _config = null;
+public class ParamConfigInstance {
+	protected static ParamConfigInstance _config = null;
 	private String domain;
 	private String websocket_proxy_url;
 	private String outbound_proxy_url;
@@ -16,6 +14,7 @@ public class ParamConfig {
 	
 
 	public String getAmiUsername() {
+		
 		return amiUsername;
 	}
 
@@ -87,13 +86,13 @@ public class ParamConfig {
 		this.realm = realm;
 	}
 
-	protected ParamConfig() {
+	protected ParamConfigInstance() {
 		// ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "applicationContext.xml");
 	}
 
-	public static ParamConfig inst() {
+	public static ParamConfigInstance inst() {
 		if (_config == null)
-			_config = new ParamConfig();
+			_config = new ParamConfigInstance();
 		return _config;
 	}
 }

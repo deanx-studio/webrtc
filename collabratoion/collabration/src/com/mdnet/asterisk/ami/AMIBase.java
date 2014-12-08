@@ -3,12 +3,12 @@ package com.mdnet.asterisk.ami;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mdnet.travel.core.service.impl.ParamConfig;
+import com.mdnet.travel.core.service.impl.ParamConfigInstance;
 
 public class AMIBase {
 	protected static AMIBase instObj = null;
 	protected Logger logger = LoggerFactory.getLogger(getClass());
-	protected AMISocket socket = new AMISocket(ParamConfig.inst().getAmiServer(), ParamConfig.inst().getAmiPort());
+	protected AMISocket socket = new AMISocket(ParamConfigInstance.inst().getAmiServer(), ParamConfigInstance.inst().getAmiPort());
 
 	protected AMIBase() {
 

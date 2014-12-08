@@ -29,6 +29,8 @@ public interface IAdminService {
 	void setParam(String paramKey, String keyValue, String keyDesc);
 
 	void setParam(String paramKey, int keyValue, String keyDesc);
+
+	void reloadParam();
 	
 	 
 }

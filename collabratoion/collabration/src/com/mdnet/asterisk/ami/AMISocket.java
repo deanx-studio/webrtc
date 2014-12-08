@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mdnet.asterisk.ami.event.EventNotify;
+import com.mdnet.travel.core.service.impl.ParamConfigInstance;
 
 public class AMISocket {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -48,7 +50,7 @@ public class AMISocket {
 		// 发送登录包
 		int r = this.readThread.sendLogin();
 
-//		System.out.println("available:" + r);
+		// System.out.println("available:" + r);
 
 		if (this.readThread.isConnect()) {
 			// logger.info("当前是连接状态，不进行重连。");
@@ -57,7 +59,8 @@ public class AMISocket {
 		logger.info("当前是断开状态，建立新socket连接。");
 		try {
 			// 建立连接
-			socket = new Socket(hostname, port);
+			socket = new Socket(ParamConfigInstance.inst().getAmiServer(),
+					ParamConfigInstance.inst().getAmiPort());
 			socket.setKeepAlive(true);
 			// 获取输入输出流，并缓存
 			this.readThread.setReader(new BufferedReader(new InputStreamReader(

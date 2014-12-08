@@ -26,7 +26,7 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Resource(name = IUserInfoDAO.DAO_NAME)
 	protected IUserInfoDAO userDAO;
-	
+
 	@Resource(name = IParamConfigDAO.DAO_NAME)
 	protected IParamConfigDAO paramsDAO;
 
@@ -121,6 +121,28 @@ public class AdminServiceImpl implements IAdminService {
 	@Override
 	public String getParam(String paramKey) {
 		return this.paramsDAO.getValue(paramKey);
+	}
+
+	@Override
+	public void reloadParam() {
+
+		ParamConfigInstance.inst().setAmiPort(
+				Integer.parseInt(paramsDAO.getValue("amiPort")));
+		ParamConfigInstance.inst()
+				.setAmiServer(paramsDAO.getValue("amiServer"));
+		ParamConfigInstance.inst().setAmiUsername(
+				paramsDAO.getValue("amiUsername"));
+		ParamConfigInstance.inst().setAmiSecrect(
+				paramsDAO.getValue("amiSecrect"));
+
+		ParamConfigInstance.inst().setDomain(paramsDAO.getValue("domain"));
+		ParamConfigInstance.inst().setWebsocket_proxy_url(
+				paramsDAO.getValue("websocket_proxy_url"));
+		ParamConfigInstance.inst().setOutbound_proxy_url(
+				paramsDAO.getValue("outbound_proxy_url"));
+		ParamConfigInstance.inst().setIce_servers(paramsDAO.getValue("ICE"));
+		ParamConfigInstance.inst().setRealm(paramsDAO.getValue("realm"));
+
 	}
 
 }

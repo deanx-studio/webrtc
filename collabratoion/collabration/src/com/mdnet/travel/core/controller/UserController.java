@@ -25,7 +25,7 @@ import com.mdnet.asterisk.ami.ResponseMsg;
 import com.mdnet.travel.core.model.TermConfig;
 import com.mdnet.travel.core.service.IAdminService;
 import com.mdnet.travel.core.service.ICallService;
-import com.mdnet.travel.core.service.impl.ParamConfig;
+import com.mdnet.travel.core.service.impl.ParamConfigInstance;
 
 @Controller
 @RequestMapping("/user")
@@ -62,11 +62,11 @@ public class UserController extends BaseController {
 	public String getTermConfig(
 			@RequestParam(value = "termId", required = true) int termId) {
 		TermConfig tc = new TermConfig();
-		tc.setDomain(ParamConfig.inst().getDomain());
-		tc.setWebsocket_proxy_url(ParamConfig.inst().getWebsocket_proxy_url());
-		tc.setOutbound_proxy_url(ParamConfig.inst().getOutbound_proxy_url());
-		tc.setIce_servers(ParamConfig.inst().getIce_servers());
-		tc.setRealm(ParamConfig.inst().getRealm());
+		tc.setDomain(ParamConfigInstance.inst().getDomain());
+		tc.setWebsocket_proxy_url(ParamConfigInstance.inst().getWebsocket_proxy_url());
+		tc.setOutbound_proxy_url(ParamConfigInstance.inst().getOutbound_proxy_url());
+		tc.setIce_servers(ParamConfigInstance.inst().getIce_servers());
+		tc.setRealm(ParamConfigInstance.inst().getRealm());
 		TerminateInfo ti = this.callService.findTerm(String.valueOf(termId));
 		if (ti != null) {
 			tc.setTermId(termId);
