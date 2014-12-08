@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.zhinet.travel.pojo.basepojo">
+
+	<class name="net.zhinet.travel.pojo.basepojo.ParamConfig" table="param_config"
+		optimistic-lock="version">
+		<id name="id">
+			<generator class="native" />
+		</id>
+
+		<property name="keyName" type="string">
+			<column index="INX_KEY_NAME" name="key_name" length="32"
+				not-null="true">
+				<comment>参数的key名称</comment>
+			</column>
+		</property>
+		<property name="keyValue" type="string">
+			<column name="key_value"
+				not-null="true">
+				<comment>参数的key的值</comment>
+			</column>
+		</property>
+		<property name="keyDesc" type="string">
+			<column name="key_desc" 
+				not-null="false">
+				<comment></comment>
+			</column>
+		</property>
+		
+	</class>
+
+</hibernate-mapping>
